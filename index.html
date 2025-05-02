@@ -302,20 +302,35 @@ function CheckPassword() {
 }
 
 function AddTodo() {
-    const input = document.getElementById("todoInput");
-    const todo = input.value.trim();
-    if (todo !== "") {
-        const list = document.getElementById("todoList");
-        const li = document.createElement("li");
-        li.textContent = todo;
-        li.onclick = function () {
-            list.removeChild(li);
-            SaveTodos();
-        };
-        list.appendChild(li);
-        input.value = "";
-        SaveTodos();
-    }
+    const todoInput = document.getElementById("todoInput");
+    const text = todoInput.value.trim();
+    if (!text) return;
+
+    const li = document.createElement("li");
+    li.textContent = text;
+
+    const editBtn = document.createElement("button");
+    editBtn.textContent = "수정";
+    editBtn.onclick = function () {
+        const newText = prompt("수정할 내용을 입력하세요:", li.firstChild.textContent);
+        if (newText !== null) {
+            li.firstChild.textContent = newText.trim();
+        }
+    };
+
+    const deleteBtn = document.createElement("button");
+    deleteBtn.textContent = "삭제";
+    deleteBtn.onclick = function () {
+        li.remove();
+    };
+
+    li.appendChild(document.createTextNode(" "));
+    li.appendChild(editBtn);
+    li.appendChild(document.createTextNode(" "));
+    li.appendChild(deleteBtn);
+
+    document.getElementById("todoList").appendChild(li);
+    todoInput.value = "";
 }
 
 function SaveTodos() {
