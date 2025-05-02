@@ -131,6 +131,11 @@
     <header>
         <img src="/Logo Image/ToyoTech_Logo.png" alt="ToyoTech Logo">
         <h1>ToyoTech</h1>
+        <button onclick="window.location.href='https://toyotech.dev/private';"
+        style="padding: 8px 16px;
+        background-color: #9b9bff;
+        border: none; border-radius: 6px;
+        color: white; cursor: pointer;">Private</button>
     </header>
 
     <main>
@@ -211,27 +216,12 @@
                     <p>Web Backend development</p>
                 </div>
             </div>
+        </section>
+
         <section>
             <h2>Contact Us</h2>
             <p>Email: makers.toyotech@gmail.com</p>
             <p>GitHub: Team ToyoTech</p>
-        </section>
-
-        <section id="privateSection" style="display: none;">
-            <h2>Private Space</h2>
-            <div>
-                <h3>To-Do List</h3>
-                <input type="text" id="todoInput" placeholder="할 일을 입력하세요">
-                <button onclick="AddTodo()">추가</button>
-                <ul id="todoList"></ul>
-            </div>
-        </section>
-        
-        <section id="passwordSection">
-            <h2>Enter Password to Access Private Space</h2>
-            <input type="password" id="passwordInput" placeholder="비밀번호를 입력하세요">
-            <button onclick="CheckPassword()">Enter</button>
-            <p id="passwordError" style="color: red; display: none;">비밀번호가 틀렸습니다.</p>
         </section>
     </main>
 
@@ -286,91 +276,6 @@
                 modal.style.display = 'none';
             }
         };
-
-        const correctPassword = "#include"; // 여기에 원하는 비밀번호 입력
-
-function CheckPassword() {
-    const input = document.getElementById("passwordInput").value;
-    const error = document.getElementById("passwordError");
-    if (input === correctPassword) {
-        document.getElementById("privateSection").style.display = "block";
-        document.getElementById("passwordSection").style.display = "none";
-        LoadTodos();
-    } else {
-        error.style.display = "block";
-    }
-}
-
-function AddTodo() {
-    const todoInput = document.getElementById("todoInput");
-    const text = todoInput.value.trim();
-    if (!text) return;
-
-    const li = document.createElement("li");
-    li.textContent = text;
-
-    const editBtn = document.createElement("button");
-    editBtn.textContent = "수정";
-    editBtn.onclick = function () {
-        const newText = prompt("수정할 내용을 입력하세요:", li.firstChild.textContent);
-        if (newText !== null) {
-            li.firstChild.textContent = newText.trim();
-        }
-    };
-
-    const deleteBtn = document.createElement("button");
-    deleteBtn.textContent = "삭제";
-    deleteBtn.onclick = function () {
-        li.remove();
-    };
-
-    li.appendChild(document.createTextNode(" "));
-    li.appendChild(editBtn);
-    li.appendChild(document.createTextNode(" "));
-    li.appendChild(deleteBtn);
-
-    document.getElementById("todoList").appendChild(li);
-    todoInput.value = "";
-}
-
-function SaveTodos() {
-    const todos = [];
-    document.querySelectorAll("#todoList li").forEach(li => {
-        todos.push(li.textContent);
-    });
-    localStorage.setItem("todoList", JSON.stringify(todos));
-}
-
-function LoadTodos() {
-    const saved = localStorage.getItem("todoList");
-    if (saved) {
-        const list = document.getElementById("todoList");
-        list.innerHTML = "";
-        JSON.parse(saved).forEach(todo => {
-            const li = document.createElement("li");
-            li.textContent = todo;
-            li.onclick = function () {
-                list.removeChild(li);
-                SaveTodos();
-            };
-            list.appendChild(li);
-        });
-    }
-}
-
-// 엔터키로 비밀번호 제출
-document.getElementById("passwordInput").addEventListener("keydown", function (event) {
-    if (event.key === "Enter") {
-        CheckPassword();
-    }
-});
-
-// 엔터키로 할 일 추가
-document.getElementById("todoInput").addEventListener("keydown", function (event) {
-    if (event.key === "Enter") {
-        AddTodo();
-    }
-});
     </script>
 </body>
 </html>

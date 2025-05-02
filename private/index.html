@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToyoTech Private</title>
+    <style>
+        body {
+            background-color: #0f0f20;
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 40px 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        #passwordSection,
+        #todoSection {
+            max-width: 600px;
+            margin: auto;
+        }
+
+        input[type="password"],
+        input[type="text"] {
+            padding: 10px;
+            width: 80%;
+            margin-right: 10px;
+            border-radius: 5px;
+            border: none;
+            outline: none;
+        }
+
+        button {
+            padding: 10px 15px;
+            background-color: #9b9bff;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            background-color: #1f1f3b;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Private ToDo List</h1>
+
+    <section id="passwordSection">
+        <input type="password" id="passwordInput" placeholder="비밀번호를 입력하세요">
+        <button onclick="CheckPassword()">Enter</button>
+    </section>
+
+    <section id="todoSection" class="hidden">
+        <input type="text" id="todoInput" placeholder="할 일을 입력하세요">
+        <button onclick="AddTodo()">추가</button>
+        <ul id="todoList"></ul>
+    </section>
+
+    <script>
+        const correctPassword = "toyotech2025"; // 간단한 인증용, 서버 보안 필요시 서버측 처리 권장
+
+        function CheckPassword() {
+            const pw = document.getElementById("passwordInput").value;
+            if (pw === correctPassword) {
+                document.getElementById("passwordSection").classList.add("hidden");
+                document.getElementById("todoSection").classList.remove("hidden");
+                LoadTodos();
+            } else {
+                alert("비밀번호가 틀렸습니다.");
+            }
+        }
+
+        function AddTodo() {
+            const todoInput = document.getElementById("todoInput");
+            const text = todoInput.value.trim();
+            if (text === "") return;
+
+            const li = document.createElement("li");
+            li.textContent = text;
+
+            const delBtn = document.createElement("button");
+            delBtn.textContent = "삭제";
+            delBtn.style.marginLeft = "10px";
+            delBtn.onclick = function () {
+                li.remove();
+                SaveTodos();
+            };
+
+            li.appendChild(delBtn);
+            document.getElementById("todoList").appendChild(li);
+            todoInput.value = "";
+            SaveTodos();
+        }
+
+        function SaveTodos() {
+            const todos = [];
+            document.querySelectorAll("#todoList li").forEach(li => {
+                todos.push(li.childNodes[0].nodeValue);
+            });
+            localStorage.setItem("privateTodos", JSON.stringify(todos));
+        }
+
+        function LoadTodos() {
+            const saved = localStorage.getItem("privateTodos");
+            if (!saved) return;
+            const todos = JSON.parse(saved);
+            todos.forEach(text => {
+                const li = document.createElement("li");
+                li.textContent = text;
+
+                const delBtn = document.createElement("button");
+                delBtn.textContent = "삭제";
+                delBtn.style.marginLeft = "10px";
+                delBtn.onclick = function () {
+                    li.remove();
+                    SaveTodos();
+                };
+
+                li.appendChild(delBtn);
+                document.getElementById("todoList").appendChild(li);
+            });
+        }
+    </script>
+</body>
+
+</html>
