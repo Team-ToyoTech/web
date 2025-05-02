@@ -19,28 +19,36 @@
         }
 
         #passwordSection,
-        #todoSection {
-            max-width: 600px;
+        #todoSection,
+        #accountSection {
+            max-width: 800px;
             margin: auto;
+            margin-bottom: 40px;
         }
 
         input[type="password"],
         input[type="text"] {
             padding: 10px;
-            width: 80%;
+            height: 25px; /* 텍스트 박스 높이를 줄임 */
+            vertical-align: middle;
+            width: 80%; /* ToDo 리스트와 동일한 길이로 설정 */
             margin-right: 10px;
             border-radius: 5px;
             border: none;
             outline: none;
+            font-size: 14px;
         }
 
         button {
-            padding: 10px 15px;
+            height: 45px; /* 버튼 높이를 텍스트 박스 높이에 맞춤 */
+            vertical-align: middle;
+            padding: 0 15px;
             background-color: #9b9bff;
             border: none;
             border-radius: 5px;
             color: white;
             cursor: pointer;
+            font-size: 14px;
         }
 
         ul {
@@ -55,37 +63,86 @@
             border-radius: 5px;
             display: flex;
             justify-content: space-between;
+            align-items: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            border: 1px solid #3a3a5a;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #2a2a4a;
         }
 
         .hidden {
             display: none;
         }
+
+        .input-row {
+            margin-top: 20px;
+        }
     </style>
 </head>
 
 <body>
-    <h1>Private ToDo List</h1>
+    <h1>Private Page</h1>
 
+    <!-- 비밀번호 입력 -->
     <section id="passwordSection">
-        <input type="password" id="passwordInput" placeholder="비밀번호를 입력하세요">
+        <input type="password" id="passwordInput" placeholder="비밀번호 입력" onkeydown="if(event.key==='Enter'){CheckPassword();}">
         <button onclick="CheckPassword()">Enter</button>
     </section>
 
+    <!-- ToDo 목록 -->
     <section id="todoSection" class="hidden">
-        <input type="text" id="todoInput" placeholder="할 일을 입력하세요">
+        <h2>ToDo 리스트</h2>
+        <input type="text" id="todoInput" placeholder="할 일 입력" onkeydown="if(event.key==='Enter'){AddTodo();}">
         <button onclick="AddTodo()">추가</button>
         <ul id="todoList"></ul>
     </section>
 
+    <!-- 계정 정보 테이블 -->
+    <section id="accountSection" class="hidden">
+        <h2>사이트 계정 정보</h2>
+        <div class="input-row">
+            <input type="text" id="siteName" placeholder="사이트명" style="margin-bottom: 10px;">
+            <input type="text" id="siteId" placeholder="아이디" style="margin-bottom: 10px;">
+            <input type="text" id="sitePw" placeholder="비밀번호" onkeydown="if(event.key==='Enter'){AddAccount();}">
+            <button onclick="AddAccount()">추가</button>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>사이트</th>
+                    <th>아이디</th>
+                    <th>비밀번호</th>
+                    <th>삭제</th>
+                </tr>
+            </thead>
+            <tbody id="accountTableBody"></tbody>
+        </table>
+    </section>
+
     <script>
-        const correctPassword = "toyotech2025"; // 간단한 인증용, 서버 보안 필요시 서버측 처리 권장
+        const correctPassword = "#include";
 
         function CheckPassword() {
             const pw = document.getElementById("passwordInput").value;
             if (pw === correctPassword) {
                 document.getElementById("passwordSection").classList.add("hidden");
                 document.getElementById("todoSection").classList.remove("hidden");
+                document.getElementById("accountSection").classList.remove("hidden");
                 LoadTodos();
+                LoadAccounts();
             } else {
                 alert("비밀번호가 틀렸습니다.");
             }
@@ -96,27 +153,65 @@
             const text = todoInput.value.trim();
             if (text === "") return;
 
-            const li = document.createElement("li");
-            li.textContent = text;
-
-            const delBtn = document.createElement("button");
-            delBtn.textContent = "삭제";
-            delBtn.style.marginLeft = "10px";
-            delBtn.onclick = function () {
-                li.remove();
-                SaveTodos();
-            };
-
-            li.appendChild(delBtn);
+            const li = CreateTodoElement(text);
             document.getElementById("todoList").appendChild(li);
             todoInput.value = "";
             SaveTodos();
         }
 
+        function CreateTodoElement(text) {
+            const li = document.createElement("li");
+
+            const span = document.createElement("span");
+            span.textContent = text;
+
+            const buttonContainer = document.createElement("div");
+            buttonContainer.style.display = "flex";
+            buttonContainer.style.justifyContent = "space-between";
+            buttonContainer.style.width = "150px"; // 버튼들이 나란히 배치되도록 할 넓이
+
+            const editBtn = document.createElement("button");
+            editBtn.textContent = "수정";
+            editBtn.onclick = function () {
+                EditTodo(span, li);
+            };
+            editBtn.style.marginLeft = "35px"; 
+
+            const delBtn = document.createElement("button");
+            delBtn.textContent = "삭제";
+            delBtn.onclick = function () {
+                li.remove();
+                SaveTodos();
+            };
+            editBtn.style.marginRight = "3px"; 
+
+            buttonContainer.appendChild(editBtn);
+            buttonContainer.appendChild(delBtn);
+            li.appendChild(span);
+            li.appendChild(buttonContainer);
+            return li;
+        }
+
+        function EditTodo(span, li) {
+            const input = document.createElement("input");
+            input.type = "text";
+            input.value = span.textContent;
+            input.style.flexGrow = "1";
+            input.onkeydown = function (event) {
+                if (event.key === "Enter") {
+                    span.textContent = input.value.trim();
+                    li.replaceChild(span, input);
+                    SaveTodos();
+                }
+            };
+            li.replaceChild(input, span);
+            input.focus();
+        }
+
         function SaveTodos() {
             const todos = [];
-            document.querySelectorAll("#todoList li").forEach(li => {
-                todos.push(li.childNodes[0].nodeValue);
+            document.querySelectorAll("#todoList li span").forEach(span => {
+                todos.push(span.textContent);
             });
             localStorage.setItem("privateTodos", JSON.stringify(todos));
         }
@@ -126,19 +221,59 @@
             if (!saved) return;
             const todos = JSON.parse(saved);
             todos.forEach(text => {
-                const li = document.createElement("li");
-                li.textContent = text;
-
-                const delBtn = document.createElement("button");
-                delBtn.textContent = "삭제";
-                delBtn.style.marginLeft = "10px";
-                delBtn.onclick = function () {
-                    li.remove();
-                    SaveTodos();
-                };
-
-                li.appendChild(delBtn);
+                const li = CreateTodoElement(text);
                 document.getElementById("todoList").appendChild(li);
+            });
+        }
+
+        function AddAccount() {
+            const site = document.getElementById("siteName").value.trim();
+            const id = document.getElementById("siteId").value.trim();
+            const pw = document.getElementById("sitePw").value.trim();
+            if (!site || !id || !pw) return;
+
+            const tbody = document.getElementById("accountTableBody");
+            const tr = document.createElement("tr");
+
+            tr.innerHTML = `<td>${site}</td><td>${id}</td><td>${pw}</td><td><button onclick="DeleteAccount(this)">삭제</button></td>`;
+            tbody.appendChild(tr);
+
+            document.getElementById("siteName").value = "";
+            document.getElementById("siteId").value = "";
+            document.getElementById("sitePw").value = "";
+
+            SaveAccounts();
+        }
+
+        function DeleteAccount(button) {
+            const row = button.closest("tr");
+            row.remove();
+            SaveAccounts();
+        }
+
+        function SaveAccounts() {
+            const rows = document.querySelectorAll("#accountTableBody tr");
+            const accounts = [];
+            rows.forEach(row => {
+                const cells = row.querySelectorAll("td");
+                accounts.push({
+                    site: cells[0].textContent,
+                    id: cells[1].textContent,
+                    pw: cells[2].textContent
+                });
+            });
+            localStorage.setItem("siteAccounts", JSON.stringify(accounts));
+        }
+
+        function LoadAccounts() {
+            const saved = localStorage.getItem("siteAccounts");
+            if (!saved) return;
+            const accounts = JSON.parse(saved);
+            const tbody = document.getElementById("accountTableBody");
+            accounts.forEach(acc => {
+                const tr = document.createElement("tr");
+                tr.innerHTML = `<td>${acc.site}</td><td>${acc.id}</td><td>${acc.pw}</td><td><button onclick="DeleteAccount(this)">삭제</button></td>`;
+                tbody.appendChild(tr);
             });
         }
     </script>
