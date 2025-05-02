@@ -125,7 +125,7 @@
                     <th>사이트</th>
                     <th>아이디</th>
                     <th>비밀번호</th>
-                    <th>삭제</th>
+                    <th>작업</th>
                 </tr>
             </thead>
             <tbody id="accountTableBody"></tbody>
@@ -235,7 +235,14 @@
             const tbody = document.getElementById("accountTableBody");
             const tr = document.createElement("tr");
 
-            tr.innerHTML = `<td>${site}</td><td>${id}</td><td>${pw}</td><td><button onclick="DeleteAccount(this)">삭제</button></td>`;
+            tr.innerHTML = `
+                <td>${site}</td>
+                <td>${id}</td>
+                <td>${pw}</td>
+                <td>
+                    <button onclick="EditAccount(this)">수정</button>
+                    <button onclick="DeleteAccount(this)">삭제</button>
+                </td>`;
             tbody.appendChild(tr);
 
             document.getElementById("siteName").value = "";
@@ -272,10 +279,54 @@
             const tbody = document.getElementById("accountTableBody");
             accounts.forEach(acc => {
                 const tr = document.createElement("tr");
-                tr.innerHTML = `<td>${acc.site}</td><td>${acc.id}</td><td>${acc.pw}</td><td><button onclick="DeleteAccount(this)">삭제</button></td>`;
+                tr.innerHTML = `
+                    <td>${acc.site}</td>
+                    <td>${acc.id}</td>
+                    <td>${acc.pw}</td>
+                    <td>
+                        <button onclick="EditAccount(this)">수정</button>
+                        <button onclick="DeleteAccount(this)">삭제</button>
+                    </td>`;
                 tbody.appendChild(tr);
             });
         }
+
+        function EditAccount(button) {
+            const row = button.closest("tr");
+            const cells = row.querySelectorAll("td");
+
+            const site = cells[0].textContent;
+            const id = cells[1].textContent;
+            const pw = cells[2].textContent;
+
+            // Replace text with input fields
+            cells[0].innerHTML = `<input type="text" value="${site}">`;
+            cells[1].innerHTML = `<input type="text" value="${id}">`;
+            cells[2].innerHTML = `<input type="text" value="${pw}">`;
+
+            button.textContent = "저장";
+            button.onclick = function () {
+            const newSite = cells[0].querySelector("input").value.trim();
+            const newId = cells[1].querySelector("input").value.trim();
+            const newPw = cells[2].querySelector("input").value.trim();
+
+            if (!newSite || !newId || !newPw) {
+                alert("빈 칸 없이 입력해주세요.");
+                return;
+            }
+
+            cells[0].textContent = newSite;
+            cells[1].textContent = newId;
+            cells[2].textContent = newPw;
+
+            button.textContent = "수정";
+            button.onclick = function () {
+            EditAccount(button);
+        };
+
+        SaveAccounts();
+    };
+}
     </script>
 </body>
 
