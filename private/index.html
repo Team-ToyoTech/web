@@ -133,20 +133,33 @@
     </section>
 
     <script>
-        const correctPassword = "#include";
+        const passwordHash = "657812523d9c3d4eb29899c681b8a89d46468a76535af2ef1af1d030fb4be784";
 
-        function CheckPassword() {
+        async function CheckPassword() {
             const pw = document.getElementById("passwordInput").value;
-            if (pw === correctPassword) {
+            const inputHash = await Sha256(pw);
+
+            if (inputHash === passwordHash) {
                 document.getElementById("passwordSection").classList.add("hidden");
                 document.getElementById("todoSection").classList.remove("hidden");
                 document.getElementById("accountSection").classList.remove("hidden");
                 LoadTodos();
                 LoadAccounts();
-            } else {
+            }
+            else {
                 alert("비밀번호가 틀렸습니다.");
             }
         }
+
+        async function Sha256(str) {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(str);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            return hashHex;
+        }
+
 
         function AddTodo() {
             const todoInput = document.getElementById("todoInput");
