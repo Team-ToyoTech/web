@@ -216,6 +216,23 @@
             <p>Email: makers.toyotech@gmail.com</p>
             <p>GitHub: Team ToyoTech</p>
         </section>
+
+        <section id="privateSection" style="display: none;">
+            <h2>Private Space</h2>
+            <div>
+                <h3>To-Do List</h3>
+                <input type="text" id="todoInput" placeholder="할 일을 입력하세요">
+                <button onclick="AddTodo()">추가</button>
+                <ul id="todoList"></ul>
+            </div>
+        </section>
+        
+        <section id="passwordSection">
+            <h2>Enter Password to Access Private Space</h2>
+            <input type="password" id="passwordInput" placeholder="비밀번호를 입력하세요">
+            <button onclick="CheckPassword()">Enter</button>
+            <p id="passwordError" style="color: red; display: none;">비밀번호가 틀렸습니다.</p>
+        </section>
     </main>
 
     <footer>
@@ -238,11 +255,11 @@
                 content: 'Embedded system 전문가로, 다수의 PCB 설계 및 마이크로컨트롤러 기반 개발 경험이 있음. 주요 프로젝트: IoT Device 개발, Robot 제어 시스템 설계 등.'
             },
             lee: {
-                title: '이동하 Dongha Lee - Client Service Developer',
+                title: '이동하 Dongha Lee - Frontend Developer',
                 content: '웹 프론트엔드와 UX/UI 설계 담당. React와 Electron 기반 어플리케이션 경험이 있으며, 사용자 중심 서비스 개발에 집중.'
             },
             park: {
-                title: '박준현 Junhyun Park - Server Developer',
+                title: '박준현 Junhyun Park - Backend Developer',
                 content: '서버 아키텍처 설계와 백엔드 개발 담당. Python Flask, Node.js 기반의 API 서버 구축 경험이 있으며, 데이터베이스 설계에 능숙.'
             },
             kim: {
@@ -269,7 +286,76 @@
                 modal.style.display = 'none';
             }
         };
+
+        const correctPassword = "#include"; // 여기에 원하는 비밀번호 입력
+
+function CheckPassword() {
+    const input = document.getElementById("passwordInput").value;
+    const error = document.getElementById("passwordError");
+    if (input === correctPassword) {
+        document.getElementById("privateSection").style.display = "block";
+        document.getElementById("passwordSection").style.display = "none";
+        LoadTodos();
+    } else {
+        error.style.display = "block";
+    }
+}
+
+function AddTodo() {
+    const input = document.getElementById("todoInput");
+    const todo = input.value.trim();
+    if (todo !== "") {
+        const list = document.getElementById("todoList");
+        const li = document.createElement("li");
+        li.textContent = todo;
+        li.onclick = function () {
+            list.removeChild(li);
+            SaveTodos();
+        };
+        list.appendChild(li);
+        input.value = "";
+        SaveTodos();
+    }
+}
+
+function SaveTodos() {
+    const todos = [];
+    document.querySelectorAll("#todoList li").forEach(li => {
+        todos.push(li.textContent);
+    });
+    localStorage.setItem("todoList", JSON.stringify(todos));
+}
+
+function LoadTodos() {
+    const saved = localStorage.getItem("todoList");
+    if (saved) {
+        const list = document.getElementById("todoList");
+        list.innerHTML = "";
+        JSON.parse(saved).forEach(todo => {
+            const li = document.createElement("li");
+            li.textContent = todo;
+            li.onclick = function () {
+                list.removeChild(li);
+                SaveTodos();
+            };
+            list.appendChild(li);
+        });
+    }
+}
+
+// 엔터키로 비밀번호 제출
+document.getElementById("passwordInput").addEventListener("keydown", function (event) {
+    if (event.key === "Enter") {
+        CheckPassword();
+    }
+});
+
+// 엔터키로 할 일 추가
+document.getElementById("todoInput").addEventListener("keydown", function (event) {
+    if (event.key === "Enter") {
+        AddTodo();
+    }
+});
     </script>
 </body>
-
 </html>
