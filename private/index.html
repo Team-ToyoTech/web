@@ -29,9 +29,9 @@
         input[type="password"],
         input[type="text"] {
             padding: 10px;
-            height: 25px; /* 텍스트 박스 높이를 줄임 */
+            height: 25px;
             vertical-align: middle;
-            width: 80%; /* ToDo 리스트와 동일한 길이로 설정 */
+            width: 80%;
             margin-right: 10px;
             border-radius: 5px;
             border: none;
@@ -40,7 +40,7 @@
         }
 
         button {
-            height: 45px; /* 버튼 높이를 텍스트 박스 높이에 맞춤 */
+            height: 45px;
             vertical-align: middle;
             padding: 0 15px;
             background-color: #9b9bff;
@@ -181,7 +181,7 @@
             const buttonContainer = document.createElement("div");
             buttonContainer.style.display = "flex";
             buttonContainer.style.justifyContent = "space-between";
-            buttonContainer.style.width = "150px"; // 버튼들이 나란히 배치되도록 할 넓이
+            buttonContainer.style.width = "150px";
 
             const editBtn = document.createElement("button");
             editBtn.textContent = "수정";
@@ -312,7 +312,6 @@
             const id = cells[1].textContent;
             const pw = cells[2].textContent;
 
-            // Replace text with input fields
             cells[0].innerHTML = `<input type="text" value="${site}">`;
             cells[1].innerHTML = `<input type="text" value="${id}">`;
             cells[2].innerHTML = `<input type="text" value="${pw}">`;
