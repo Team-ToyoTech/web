@@ -7,16 +7,14 @@
     <title>Team ToyoTech</title>
     <link rel="icon" href="/Logo Image/ToyoTech_Logo_forTab.png" />
     <style>
-        body
-        {
+        body {
             margin: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #0f0f20;
             color: #ffffff;
         }
 
-        header
-        {
+        header {
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -24,50 +22,42 @@
             background-color: #1a1a2e;
         }
 
-        header img
-        {
+        header img {
             height: 95px;
         }
 
-        header h1
-        {
+        header h1 {
             font-size: 24px;
             margin: 0;
         }
 
-        main
-        {
+        main {
             padding: 40px 50px;
         }
 
-        section
-        {
+        section {
             margin-bottom: 60px;
         }
 
-        h2
-        {
+        h2 {
             font-size: 24px;
             color: #9b9bff;
             margin-bottom: 20px;
         }
 
-        .team-grid
-        {
+        .team-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 30px;
         }
 
-        .proj-list
-        {
+        .proj-list {
             display: flex;
             flex-direction: column;
             gap: 30px;
         }
 
-        .member
-        {
+        .member {
             background-color: #1f1f3b;
             border-radius: 12px;
             padding: 20px;
@@ -75,8 +65,7 @@
             cursor: pointer;
         }
 
-        .member img
-        {
+        .member img {
             width: 100px;
             height: 100px;
             border-radius: 50%;
@@ -84,19 +73,16 @@
             border: 2px solid #9b9bff;
         }
 
-        .member h3
-        {
+        .member h3 {
             margin: 10px 0 5px;
         }
 
-        .member p
-        {
+        .member p {
             font-size: 14px;
             color: #cccccc;
         }
 
-        footer
-        {
+        footer {
             text-align: center;
             padding: 20px;
             background-color: #1a1a2e;
@@ -105,8 +91,7 @@
         }
 
         /* Modal styles */
-        .modal
-        {
+        .modal {
             display: none;
             position: fixed;
             z-index: 999;
@@ -118,8 +103,7 @@
             background-color: rgba(0, 0, 0, 0.6);
         }
 
-        .modal-content
-        {
+        .modal-content {
             background-color: #1f1f3b;
             margin: 10% auto;
             padding: 20px;
@@ -129,8 +113,7 @@
             border-radius: 10px;
         }
 
-        .close
-        {
+        .close {
             color: #aaa;
             float: right;
             font-size: 28px;
@@ -138,8 +121,7 @@
             cursor: pointer;
         }
 
-        .close:hover
-        {
+        .close:hover {
             color: #fff;
         }
     </style>
@@ -241,8 +223,7 @@
             member.addEventListener('click', () => {
                 const name = member.getAttribute('data-name');
                 const profile = profiles[name];
-                if (profile)
-                {
+                if (profile) {
                     document.getElementById('profileTitle').textContent = profile.title;
                     document.getElementById('profileContent').textContent = profile.content;
                     document.getElementById('profileModal').style.display = 'block';
@@ -250,14 +231,13 @@
             });
         });
 
-        window.onclick = function (event)
-        {
+        window.onclick = function (event) {
             const modal = document.getElementById('profileModal');
-            if (event.target === modal)
-            {
+            if (event.target === modal) {
                 modal.style.display = 'none';
             }
         };
     </script>
 </body>
+
 </html>
