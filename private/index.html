@@ -93,14 +93,8 @@
     </style>
 </head>
 
-<body>
+<body onload="CheckAccess()">
     <h1>Private Page</h1>
-
-    <!-- 비밀번호 입력 -->
-    <section id="passwordSection">
-        <input type="password" id="passwordInput" placeholder="비밀번호 입력" onkeydown="if(event.key==='Enter'){CheckPassword();}">
-        <button onclick="CheckPassword()">Enter</button>
-    </section>
 
     <!-- ToDo 목록 -->
     <section id="todoSection" class="hidden">
@@ -133,33 +127,18 @@
     </section>
 
     <script>
-        const passwordHash = "657812523d9c3d4eb29899c681b8a89d46468a76535af2ef1af1d030fb4be784";
 
-        async function CheckPassword() {
-            const pw = document.getElementById("passwordInput").value;
-            const inputHash = await Sha256(pw);
-
-            if (inputHash === passwordHash) {
-                document.getElementById("passwordSection").classList.add("hidden");
+        function CheckAccess() {
+            if (sessionStorage.getItem("authenticated") !== "true") {
+                location.href = "/private/login.html";
+            }
+            else {
                 document.getElementById("todoSection").classList.remove("hidden");
                 document.getElementById("accountSection").classList.remove("hidden");
                 LoadTodos();
                 LoadAccounts();
             }
-            else {
-                alert("비밀번호가 틀렸습니다.");
-            }
         }
-
-        async function Sha256(str) {
-            const encoder = new TextEncoder();
-            const data = encoder.encode(str);
-            const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-            const hashArray = Array.from(new Uint8Array(hashBuffer));
-            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-            return hashHex;
-        }
-
 
         function AddTodo() {
             const todoInput = document.getElementById("todoInput");

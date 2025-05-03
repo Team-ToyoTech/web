@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - ToyoTech</title>
+    <style>
+        body {
+            background-color: #0f0f20;
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        input[type="password"] {
+            padding: 10px;
+            height: 25px;
+            width: 60%;
+            border-radius: 5px;
+            border: none;
+            outline: none;
+            font-size: 14px;
+            margin-right: 10px;
+        }
+
+        button {
+            height: 45px;
+            padding: 0 15px;
+            background-color: #9b9bff;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Login</h1>
+    <input type="password" id="passwordInput" placeholder="비밀번호 입력" onkeydown="if(event.key==='Enter'){CheckPassword();}">
+    <button onclick="CheckPassword()">Enter</button>
+
+    <script>
+        const passwordHash = "657812523d9c3d4eb29899c681b8a89d46468a76535af2ef1af1d030fb4be784";
+
+        async function CheckPassword() {
+            const pw = document.getElementById("passwordInput").value;
+            const inputHash = await Sha256(pw);
+
+            if (inputHash === passwordHash) {
+                sessionStorage.setItem("authenticated", "true");
+                location.href = "/private/index.html";
+            } else {
+                alert("비밀번호가 틀렸습니다.");
+            }
+        }
+
+        async function Sha256(str) {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(str);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+    </script>
+</body>
+
+</html>
