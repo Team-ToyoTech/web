@@ -97,7 +97,6 @@
                 placeholder="비밀번호 입력"
             /><br /><br />
             <button onclick="Login()">로그인</button>
-            <button onclick="Register()">회원가입</button>
         </main>
 
         <footer>&copy; 2025 ToyoTech. All rights reserved.</footer>
@@ -108,7 +107,6 @@
                 getAuth,
                 signInWithEmailAndPassword,
             } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-            import { createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
 
             const firebaseConfig = {
                 apiKey: "AIzaSyARGW_mHhw5A8S2ImeNW3fEXrxBExgcxGg",
@@ -132,28 +130,6 @@
                 } catch (error) {
                     alert("로그인 실패: " + error.message);
                 }
-            };
-
-            window.Register = function () {
-                const email = document.getElementById("emailInput").value;
-                const password = document.getElementById("passwordInput").value;
-
-                createUserWithEmailAndPassword(auth, email, password)
-                    .then((userCredential) => {
-                        const user = userCredential.user;
-                        alert("회원가입 성공: " + user.email);
-                    })
-                    .catch((error) => {
-                        const errorCode = error.code;
-                        const errorMessage = error.message;
-                        alert(
-                            "회원가입 실패: " +
-                                errorMessage +
-                                " (" +
-                                errorCode +
-                                ")"
-                        );
-                    });
             };
 
             // 엔터 키로 로그인 실행
