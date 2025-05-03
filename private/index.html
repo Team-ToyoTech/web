@@ -131,7 +131,7 @@
 
         function CheckAccess() {
             if (sessionStorage.getItem("authenticated") !== "true") {
-                location.href = "/private/login";
+                location.href = "/private/login/index.html";
             }
             else {
                 document.getElementById("todoSection").classList.remove("hidden");
