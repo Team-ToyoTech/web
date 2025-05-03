@@ -127,20 +127,41 @@
         </table>
     </section>
 
-    <script>
+    <button onclick="Logout()">로그아웃</button>
 
-        function CheckAccess() {
-            if (sessionStorage.getItem("authenticated") !== "true") {
-                location.href = "/private/login";
-            }
-            else {
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyARGW_mHhw5A8S2ImeNW3fEXrxBExgcxGg",
+            authDomain: "toyotech-web.firebaseapp.com",
+            projectId: "toyotech-web",
+            storageBucket: "toyotech-web.appspot.com",
+            messagingSenderId: "132249097383",
+            appId: "1:132249097383:web:f7e07df7bcfa6c2c3cf848"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
                 document.getElementById("todoSection").classList.remove("hidden");
                 document.getElementById("accountSection").classList.remove("hidden");
                 LoadTodos();
                 LoadAccounts();
+            } else {
+                window.location.href = "/private/login/index.html";
             }
-        }
+        });
 
+        window.Logout = function () {
+            signOut(auth).then(() => {
+                window.location.href = "/private/login/index.html";
+            });
+        };
+        
         function AddTodo() {
             const todoInput = document.getElementById("todoInput");
             const text = todoInput.value.trim();
