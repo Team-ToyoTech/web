@@ -123,7 +123,7 @@
         style="padding: 8px 16px;
         background-color: #9b9bff;
         border: none; border-radius: 6px;
-        color: white; cursor: pointer;">Log Out</button>
+        color: white; cursor: pointer;">로그아웃</button>
     </header>
     
     <main>
@@ -181,13 +181,13 @@
                 LoadTodos();
                 LoadAccounts();
             } else {
-                window.location.href = "/private/login/index.html";
+                window.location.href = "/private/login/";
             }
         });
 
         window.Logout = function () {
             signOut(auth).then(() => {
-                window.location.href = "/private/login/index.html";
+                window.location.href = "/private/login/";
             });
         };
 
