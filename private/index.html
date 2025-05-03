@@ -7,11 +7,32 @@
     <title>ToyoTech Private</title>
     <link rel="icon" href="/Logo Image/ToyoTech_Logo_forTab.png"/>
     <style>
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 3px 30px;
+            background-color: #1a1a2e;
+        }
+
+        header img {
+            height: 95px;
+        }
+
+        header h1 {
+            font-size: 24px;
+            margin: 0;
+        }
+
+        main {
+            padding: 40px 50px;
+        }
+
         body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #0f0f20;
             color: #ffffff;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            padding: 40px 20px;
         }
 
         h1 {
@@ -94,9 +115,18 @@
     </style>
 </head>
 
-<body onload="CheckAccess()">
-    <h1>Private Page</h1>
-
+<body>
+    <header>
+        <img src="/Logo Image/ToyoTech_Logo.png" alt="ToyoTech Logo">
+        <h1>ToyoTech Private</h1>
+        <button onclick="Logout()"
+        style="padding: 8px 16px;
+        background-color: #9b9bff;
+        border: none; border-radius: 6px;
+        color: white; cursor: pointer;">Log Out</button>
+    </header>
+    
+    <main>
     <!-- ToDo 목록 -->
     <section id="todoSection" class="hidden">
         <h2>ToDo 리스트</h2>
@@ -126,8 +156,7 @@
             <tbody id="accountTableBody"></tbody>
         </table>
     </section>
-
-    <button onclick="Logout()">로그아웃</button>
+    </main>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
