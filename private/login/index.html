@@ -4,13 +4,92 @@
     <meta charset="UTF-8">
     <title>Login</title>
     <link rel="icon" href="/Logo Image/ToyoTech_Logo_forTab.png"/>
+    <style>
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 3px 30px;
+            background-color: #1a1a2e;
+        }
+
+        header img {
+            height: 95px;
+        }
+
+        header h1 {
+            font-size: 24px;
+            margin: 0;
+        }
+
+        main {
+            padding: 40px 50px;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0f0f20;
+            color: #ffffff;
+            text-align: center;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        input[type="password"],
+        input[type="email"] {
+            padding: 10px;
+            height: 25px;
+            vertical-align: middle;
+            width: 30%;
+            margin-right: 10px;
+            border-radius: 5px;
+            border: none;
+            outline: none;
+            font-size: 14px;
+        }
+
+        button {
+            height: 45px;
+            vertical-align: middle;
+            padding: 0 15px;
+            background-color: #9b9bff;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #1a1a2e;
+            font-size: 14px;
+            color: #aaaaaa;
+        }
+    </style>
 </head>
 <body>
-    <h2>Login</h2>
-    <input type="email" id="emailInput" placeholder="이메일 입력"><br><br>
-    <input type="password" id="passwordInput" placeholder="비밀번호 입력"><br><br>
-    <button onclick="Login()">로그인</button>
-    <button onclick="Register()">회원가입</button>
+    <header>
+        <img src="/Logo Image/ToyoTech_Logo.png" alt="ToyoTech Logo" onclick="window.location.href='/'" style="cursor: pointer;">
+        <h1>ToyoTech Private</h1>
+    </header>
+
+    <main>
+        <h2>Login</h2>
+        <input type="email" id="emailInput" placeholder="이메일 입력"><br><br>
+        <input type="password" id="passwordInput" placeholder="비밀번호 입력"><br><br>
+        <button onclick="Login()">로그인</button>
+        <button onclick="Register()">회원가입</button>
+    </main>
+
+    <footer>
+        &copy; 2025 ToyoTech. All rights reserved.
+    </footer>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
