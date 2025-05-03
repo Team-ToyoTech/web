@@ -1,281 +1,313 @@
 <!DOCTYPE html>
 <html lang="ko">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Team ToyoTech</title>
+        <link rel="icon" href="/Logo Image/ToyoTech_Logo_forTab.png" />
+        <style>
+            body {
+                margin: 0;
+                font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+                background-color: #0f0f20;
+                color: #ffffff;
+            }
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Team ToyoTech</title>
-    <link rel="icon" href="/Logo Image/ToyoTech_Logo_forTab.png"/>
-    <style>
-        body {
-            margin: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #0f0f20;
-            color: #ffffff;
-        }
+            header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 3px 30px;
+                background-color: #1a1a2e;
+            }
 
-        header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 3px 30px;
-            background-color: #1a1a2e;
-        }
+            header img {
+                height: 95px;
+            }
 
-        header img {
-            height: 95px;
-        }
+            header h1 {
+                font-size: 24px;
+                margin: 0;
+            }
 
-        header h1 {
-            font-size: 24px;
-            margin: 0;
-        }
+            main {
+                padding: 40px 50px;
+            }
 
-        main {
-            padding: 40px 50px;
-        }
+            section {
+                margin-bottom: 60px;
+            }
 
-        section {
-            margin-bottom: 60px;
-        }
+            h2 {
+                font-size: 24px;
+                color: #9b9bff;
+                margin-bottom: 20px;
+            }
 
-        h2 {
-            font-size: 24px;
-            color: #9b9bff;
-            margin-bottom: 20px;
-        }
+            .team-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+                gap: 30px;
+            }
 
-        .team-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 30px;
-        }
+            .proj-list {
+                display: flex;
+                flex-direction: column;
+                gap: 30px;
+            }
 
-        .proj-list {
-            display: flex;
-            flex-direction: column;
-            gap: 30px;
-        }
+            .member {
+                background-color: #1f1f3b;
+                border-radius: 12px;
+                padding: 20px;
+                text-align: center;
+                cursor: pointer;
+            }
 
-        .member {
-            background-color: #1f1f3b;
-            border-radius: 12px;
-            padding: 20px;
-            text-align: center;
-            cursor: pointer;
-        }
+            .member img {
+                width: 100px;
+                height: 100px;
+                border-radius: 50%;
+                margin-bottom: 15px;
+                border: 2px solid #9b9bff;
+            }
 
-        .member img {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            margin-bottom: 15px;
-            border: 2px solid #9b9bff;
-        }
+            .member h3 {
+                margin: 10px 0 5px;
+            }
 
-        .member h3 {
-            margin: 10px 0 5px;
-        }
+            .member p {
+                font-size: 14px;
+                color: #cccccc;
+            }
 
-        .member p {
-            font-size: 14px;
-            color: #cccccc;
-        }
+            footer {
+                text-align: center;
+                padding: 20px;
+                background-color: #1a1a2e;
+                font-size: 14px;
+                color: #aaaaaa;
+            }
 
-        footer {
-            text-align: center;
-            padding: 20px;
-            background-color: #1a1a2e;
-            font-size: 14px;
-            color: #aaaaaa;
-        }
+            /* Modal styles */
+            .modal {
+                display: none;
+                position: fixed;
+                z-index: 999;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                overflow: auto;
+                background-color: rgba(0, 0, 0, 0.6);
+            }
 
-        /* Modal styles */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 999;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.6);
-        }
+            .modal-content {
+                background-color: #1f1f3b;
+                margin: 10% auto;
+                padding: 20px;
+                border: 1px solid #888;
+                width: 80%;
+                max-width: 500px;
+                border-radius: 10px;
+            }
 
-        .modal-content {
-            background-color: #1f1f3b;
-            margin: 10% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-            max-width: 500px;
-            border-radius: 10px;
-        }
+            .close {
+                color: #aaa;
+                float: right;
+                font-size: 28px;
+                font-weight: bold;
+                cursor: pointer;
+            }
 
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-        }
+            .close:hover {
+                color: #fff;
+            }
+        </style>
+    </head>
 
-        .close:hover {
-            color: #fff;
-        }
-    </style>
-</head>
+    <body>
+        <header>
+            <img
+                src="/Logo Image/ToyoTech_Logo.png"
+                alt="ToyoTech Logo"
+                onclick="window.location.href='/'"
+                style="cursor: pointer"
+            />
+            <h1>ToyoTech</h1>
+            <button
+                onclick="window.location.href='/private/login/'"
+                style="
+                    padding: 8px 16px;
+                    background-color: #9b9bff;
+                    border: none;
+                    border-radius: 6px;
+                    color: white;
+                    cursor: pointer;
+                "
+            >
+                Private
+            </button>
+        </header>
 
-<body>
-    <header>
-        <img src="/Logo Image/ToyoTech_Logo.png" alt="ToyoTech Logo" onclick="window.location.href='/'" style="cursor: pointer;">
-        <h1>ToyoTech</h1>
-        <button onclick="window.location.href='/private/login/'"
-        style="padding: 8px 16px;
-        background-color: #9b9bff;
-        border: none; border-radius: 6px;
-        color: white; cursor: pointer;">Private</button>
-    </header>
-
-    <main>
-        <section>
-            <h2>Our Team</h2>
-            <div class="team-grid">
-                <div class="member" data-name="cho">
-                    <img src="/Profile Image/YSC.png" alt="Member Photo">
-                    <h3>조영식 Youngsik Cho</h3>
-                    <p>Lead Developer</p>
-                    <p>PCB Design Engineer</p>
+        <main>
+            <section>
+                <h2>Our Team</h2>
+                <div class="team-grid">
+                    <div class="member" data-name="cho">
+                        <img src="/Profile Image/YSC.png" alt="Member Photo" />
+                        <h3>조영식 Youngsik Cho</h3>
+                        <p>Lead Developer</p>
+                        <p>PCB Design Engineer</p>
+                    </div>
+                    <div class="member" data-name="lee">
+                        <img src="/Profile Image/DHL.jpg" alt="Member Photo" />
+                        <h3>이동하 Dongha Lee</h3>
+                        <p>Frontend Developer</p>
+                    </div>
+                    <div class="member" data-name="park">
+                        <img src="/Profile Image/JHP.png" alt="Member Photo" />
+                        <h3>박준현 Junhyun Park</h3>
+                        <p>Backend Developer</p>
+                    </div>
+                    <div class="member" data-name="kim">
+                        <img src="/Profile Image/JWK.png" alt="Member Photo" />
+                        <h3>김주원 Juwon Kim</h3>
+                        <p>Software Reviewer</p>
+                    </div>
                 </div>
-                <div class="member" data-name="lee">
-                    <img src="/Profile Image/DHL.jpg" alt="Member Photo">
-                    <h3>이동하 Dongha Lee</h3>
-                    <p>Frontend Developer</p>
+            </section>
+
+            <section>
+                <h2>Our Projects</h2>
+                <p>Projects with C#, PCB, Web communcation</p>
+                <div class="proj-list">
+                    <div
+                        class="member"
+                        onclick="window.open('https://github.com/Team-ToyoTech/Galactic-Manhunt');"
+                    >
+                        <h3>Galactic Manhunt</h3>
+                    </div>
+                    <div
+                        class="member"
+                        onclick="window.open('https://github.com/Team-ToyoTech/Neural-Words');"
+                    >
+                        <h3>Neural Words</h3>
+                        <p>using FastText</p>
+                    </div>
+                    <div class="member">
+                        <h3>IoT Service</h3>
+                        <p>using ESP32 Chip</p>
+                    </div>
                 </div>
-                <div class="member" data-name="park">
-                    <img src="/Profile Image/JHP.png" alt="Member Photo">
-                    <h3>박준현 Junhyun Park</h3>
-                    <p>Backend Developer</p>
+            </section>
+
+            <section>
+                <h2>Our Skills</h2>
+                <div class="team-grid">
+                    <div class="member">
+                        <img src="/Lang Image/CS.png" alt="C#" />
+                        <h3>C#</h3>
+                        <p>Winform, Socket projects</p>
+                    </div>
+                    <div class="member">
+                        <img src="/Lang Image/C++.png" alt="C/C++" />
+                        <h3>C/C++</h3>
+                        <p>ESP32 projects</p>
+                    </div>
+                    <div class="member">
+                        <img src="/Lang Image/python.png" alt="Python" />
+                        <h3>Python</h3>
+                    </div>
+                    <div class="member">
+                        <img src="/Lang Image/arduino.png" alt="Arduino" />
+                        <h3>Arduino</h3>
+                    </div>
+                    <div class="member">
+                        <img src="/Lang Image/html.jpg" alt="HTML/CSS" />
+                        <h3>HTML/CSS</h3>
+                        <p>Web Frontend development</p>
+                    </div>
+                    <div class="member">
+                        <img src="/Lang Image/nodejs.png" alt="Node.js" />
+                        <h3>Node.js</h3>
+                        <p>Web Backend development</p>
+                    </div>
                 </div>
-                <div class="member" data-name="kim">
-                    <img src="/Profile Image/JWK.png" alt="Member Photo">
-                    <h3>김주원 Juwon Kim</h3>
-                    <p>Software Reviewer</p>
-                </div>
+            </section>
+
+            <section>
+                <h2>Contact Us</h2>
+                <p>Email: makers.toyotech@gmail.com</p>
+                <p>GitHub: Team ToyoTech</p>
+            </section>
+        </main>
+
+        <footer>&copy; 2025 ToyoTech. All rights reserved.</footer>
+
+        <!-- Modal -->
+        <div id="profileModal" class="modal">
+            <div class="modal-content">
+                <span
+                    class="close"
+                    onclick="document.getElementById('profileModal').style.display='none'"
+                    >&times;</span
+                >
+                <h2 id="profileTitle"></h2>
+                <p id="profileContent"></p>
             </div>
-        </section>
-
-        <section>
-            <h2>Our Projects</h2>
-            <p>Projects with C#, PCB, Web communcation</p>
-            <div class="proj-list">
-                <div class="member" onclick="window.open('https://github.com/Team-ToyoTech/Galactic-Manhunt');">
-                    <h3>Galactic Manhunt</h3>
-                </div>
-                <div class="member" onclick="window.open('https://github.com/Team-ToyoTech/Neural-Words');">
-                    <h3>Neural Words</h3>
-                    <p>using FastText</p>
-                </div>
-                <div class="member">
-                    <h3>IoT Service</h3>
-                    <p>using ESP32 Chip</p>
-                </div>
-            </div>
-        </section>
-
-        <section>
-            <h2>Our Skills</h2>
-            <div class="team-grid">
-                <div class="member">
-                    <img src="/Lang Image/CS.png" alt="C#">
-                    <h3>C#</h3>
-                    <p>Winform, Socket projects</p>
-                </div>
-                <div class="member">
-                    <img src="/Lang Image/C++.png" alt="C/C++">
-                    <h3>C/C++</h3>
-                    <p>ESP32 projects</p>
-                </div>
-                <div class="member">
-                    <img src="/Lang Image/python.png" alt="Python">
-                    <h3>Python</h3>
-                </div>
-                <div class="member">
-                    <img src="/Lang Image/arduino.png" alt="Arduino">
-                    <h3>Arduino</h3>
-                </div>
-                <div class="member">
-                    <img src="/Lang Image/html.jpg" alt="HTML/CSS">
-                    <h3>HTML/CSS</h3>
-                    <p>Web Frontend development</p>
-                </div>
-                <div class="member">
-                    <img src="/Lang Image/nodejs.png" alt="Node.js">
-                    <h3>Node.js</h3>
-                    <p>Web Backend development</p>
-                </div>
-            </div>
-        </section>
-
-        <section>
-            <h2>Contact Us</h2>
-            <p>Email: makers.toyotech@gmail.com</p>
-            <p>GitHub: Team ToyoTech</p>
-        </section>
-    </main>
-
-    <footer>
-        &copy; 2025 ToyoTech. All rights reserved.
-    </footer>
-
-    <!-- Modal -->
-    <div id="profileModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="document.getElementById('profileModal').style.display='none'">&times;</span>
-            <h2 id="profileTitle"></h2>
-            <p id="profileContent"></p>
         </div>
-    </div>
 
-    <script>
-        const profiles = {
-            cho: {
-                title: '조영식 Youngsik Cho - Lead Developer',
-                content: 'Embedded system 전문가로, 다수의 PCB 설계 및 마이크로컨트롤러 기반 개발 경험이 있음. 주요 프로젝트: IoT Device 개발, Robot 제어 시스템 설계 등.'
-            },
-            lee: {
-                title: '이동하 Dongha Lee - Frontend Developer',
-                content: '웹 프론트엔드와 UX/UI 설계 담당. React와 Electron 기반 어플리케이션 경험이 있으며, 사용자 중심 서비스 개발에 집중.'
-            },
-            park: {
-                title: '박준현 Junhyun Park - Backend Developer',
-                content: '이대부고 68기로, 삼성 주최 대회에서 공감상을 수상했으며, 백준 알고리즘 사이트에서 플래티넘 5 등급을 달성했습니다.'
-            },
-            kim: {
-                title: '김주원 Juwon Kim - Software Reviewer',
-                content: '품질 보증 및 코드 리뷰 역할 담당. 정적 분석 도구 및 테스트 자동화 프로세스 설정 경험이 있으며, 프로젝트 문서화 작업을 주도함.'
-            }
-        };
+        <script>
+            const profiles = {
+                cho: {
+                    title: "조영식 Youngsik Cho - Lead Developer",
+                    content:
+                        "Embedded system 전문가로, 다수의 PCB 설계 및 마이크로컨트롤러 기반 개발 경험이 있음. 주요 프로젝트: IoT Device 개발, Robot 제어 시스템 설계 등.",
+                },
+                lee: {
+                    title: "이동하 Dongha Lee - Frontend Developer",
+                    content:
+                        "웹 프론트엔드와 UX/UI 설계 담당. React와 Electron 기반 어플리케이션 경험이 있으며, 사용자 중심 서비스 개발에 집중.",
+                },
+                park: {
+                    title: "박준현 Junhyun Park - Backend Developer",
+                    content:
+                        "이대부고 68기로, 삼성 주최 대회에서 공감상을 수상했으며, 백준 알고리즘 사이트에서 플래티넘 5 등급을 달성했습니다.",
+                },
+                kim: {
+                    title: "김주원 Juwon Kim - Software Reviewer",
+                    content:
+                        "품질 보증 및 코드 리뷰 역할 담당. 정적 분석 도구 및 테스트 자동화 프로세스 설정 경험이 있으며, 프로젝트 문서화 작업을 주도함.",
+                },
+            };
 
-        document.querySelectorAll('.team-grid .member').forEach(member => {
-            member.addEventListener('click', () => {
-                const name = member.getAttribute('data-name');
-                const profile = profiles[name];
-                if (profile) {
-                    document.getElementById('profileTitle').textContent = profile.title;
-                    document.getElementById('profileContent').textContent = profile.content;
-                    document.getElementById('profileModal').style.display = 'block';
+            document
+                .querySelectorAll(".team-grid .member")
+                .forEach((member) => {
+                    member.addEventListener("click", () => {
+                        const name = member.getAttribute("data-name");
+                        const profile = profiles[name];
+                        if (profile) {
+                            document.getElementById(
+                                "profileTitle"
+                            ).textContent = profile.title;
+                            document.getElementById(
+                                "profileContent"
+                            ).textContent = profile.content;
+                            document.getElementById(
+                                "profileModal"
+                            ).style.display = "block";
+                        }
+                    });
+                });
+
+            window.onclick = function (event) {
+                const modal = document.getElementById("profileModal");
+                if (event.target === modal) {
+                    modal.style.display = "none";
                 }
-            });
-        });
-
-        window.onclick = function (event) {
-            const modal = document.getElementById('profileModal');
-            if (event.target === modal) {
-                modal.style.display = 'none';
-            }
-        };
-    </script>
-</body>
+            };
+        </script>
+    </body>
 </html>

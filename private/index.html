@@ -1,296 +1,326 @@
 <!DOCTYPE html>
 <html lang="ko">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ToyoTech Private</title>
-    <link rel="icon" href="/Logo Image/ToyoTech_Logo_forTab.png"/>
-    <style>
-        header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 3px 30px;
-            background-color: #1a1a2e;
-        }
-
-        header img {
-            height: 95px;
-        }
-
-        header h1 {
-            font-size: 24px;
-            margin: 0;
-        }
-
-        main {
-            padding: 40px 50px;
-        }
-
-        body {
-            margin: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #0f0f20;
-            color: #ffffff;
-        }
-
-        h1 {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        #passwordSection,
-        #todoSection,
-        #accountSection {
-            max-width: 800px;
-            margin: auto;
-            margin-bottom: 40px;
-        }
-
-        input[type="password"],
-        input[type="text"] {
-            padding: 10px;
-            height: 25px;
-            vertical-align: middle;
-            width: 80%;
-            margin-right: 10px;
-            border-radius: 5px;
-            border: none;
-            outline: none;
-            font-size: 14px;
-        }
-
-        button {
-            height: 45px;
-            vertical-align: middle;
-            padding: 0 15px;
-            background-color: #9b9bff;
-            border: none;
-            border-radius: 5px;
-            color: white;
-            cursor: pointer;
-            font-size: 14px;
-        }
-
-        footer {
-            text-align: center;
-            padding: 20px;
-            background-color: #1a1a2e;
-            font-size: 14px;
-            color: #aaaaaa;
-        }
-
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        li {
-            background-color: #1f1f3b;
-            padding: 10px;
-            margin-top: 10px;
-            border-radius: 5px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        th,
-        td {
-            border: 1px solid #3a3a5a;
-            padding: 10px;
-            text-align: center;
-        }
-
-        th {
-            background-color: #2a2a4a;
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        .input-row {
-            margin-top: 20px;
-        }
-    </style>
-</head>
-
-<body>
-    <header>
-        <img src="/Logo Image/ToyoTech_Logo.png" alt="ToyoTech Logo" onclick="window.location.href='/'" style="cursor: pointer;">
-        <h1>ToyoTech Private</h1>
-        <button onclick="Logout()"
-        style="padding: 8px 16px;
-        background-color: #9b9bff;
-        border: none; border-radius: 6px;
-        color: white; cursor: pointer;">로그아웃</button>
-    </header>
-    
-    <main>
-        <!-- ToDo 목록 -->
-        <section id="todoSection" class="hidden">
-            <h2>ToDo 리스트</h2>
-            <input type="text" id="todoInput" placeholder="할 일 입력">
-            <button onclick="AddTodo()">추가</button>
-            <ul id="todoList"></ul>
-        </section>
-
-        <!-- 계정 정보 테이블 -->
-        <section id="accountSection" class="hidden">
-            <h2>사이트 계정 정보</h2>
-            <div class="input-row">
-                <input type="text" id="siteName" placeholder="사이트명" style="margin-bottom: 10px;">
-                <input type="text" id="siteId" placeholder="아이디" style="margin-bottom: 10px;">
-                <input type="text" id="sitePw" placeholder="비밀번호">
-                <button onclick="AddAccount()">추가</button>
-            </div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>사이트</th>
-                        <th>아이디</th>
-                        <th>비밀번호</th>
-                        <th>작업</th>
-                    </tr>
-                </thead>
-                <tbody id="accountTableBody"></tbody>
-            </table>
-        </section>
-    </main>
-
-    <footer>
-        &copy; 2025 ToyoTech. All rights reserved.
-    </footer>
-
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyARGW_mHhw5A8S2ImeNW3fEXrxBExgcxGg",
-            authDomain: "toyotech-web.firebaseapp.com",
-            projectId: "toyotech-web",
-            storageBucket: "toyotech-web.appspot.com",
-            messagingSenderId: "132249097383",
-            appId: "1:132249097383:web:f7e07df7bcfa6c2c3cf848"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                document.getElementById("todoSection").classList.remove("hidden");
-                document.getElementById("accountSection").classList.remove("hidden");
-                LoadTodos();
-                LoadAccounts();
-            } else {
-                window.location.href = "/private/login/";
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>ToyoTech Private</title>
+        <link rel="icon" href="/Logo Image/ToyoTech_Logo_forTab.png" />
+        <style>
+            header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 3px 30px;
+                background-color: #1a1a2e;
             }
-        });
 
-        window.Logout = function () {
-            signOut(auth).then(() => {
-                window.location.href = "/private/login/";
-            });
-        };
+            header img {
+                height: 95px;
+            }
 
-        window.AddTodo = function () {
-            const todoInput = document.getElementById("todoInput");
-            const text = todoInput.value.trim();
-            if (text === "") return;
-            
-            const li = CreateTodoElement(text);
-            document.getElementById("todoList").appendChild(li);
-            todoInput.value = "";
-            SaveTodos();
-        }
+            header h1 {
+                font-size: 24px;
+                margin: 0;
+            }
 
-        function CreateTodoElement(text) {
-            const li = document.createElement("li");
+            main {
+                padding: 40px 50px;
+            }
 
-            const span = document.createElement("span");
-            span.textContent = text;
+            body {
+                margin: 0;
+                font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+                background-color: #0f0f20;
+                color: #ffffff;
+            }
 
-            const buttonContainer = document.createElement("div");
-            buttonContainer.style.display = "flex";
-            buttonContainer.style.justifyContent = "space-between";
-            buttonContainer.style.width = "150px";
+            h1 {
+                text-align: center;
+                margin-bottom: 30px;
+            }
 
-            const editBtn = document.createElement("button");
-            editBtn.textContent = "수정";
-            editBtn.onclick = function () {
-                EditTodo(span, li);
+            #passwordSection,
+            #todoSection,
+            #accountSection {
+                max-width: 800px;
+                margin: auto;
+                margin-bottom: 40px;
+            }
+
+            input[type="password"],
+            input[type="text"] {
+                padding: 10px;
+                height: 25px;
+                vertical-align: middle;
+                width: 80%;
+                margin-right: 10px;
+                border-radius: 5px;
+                border: none;
+                outline: none;
+                font-size: 14px;
+            }
+
+            button {
+                height: 45px;
+                vertical-align: middle;
+                padding: 0 15px;
+                background-color: #9b9bff;
+                border: none;
+                border-radius: 5px;
+                color: white;
+                cursor: pointer;
+                font-size: 14px;
+            }
+
+            footer {
+                text-align: center;
+                padding: 20px;
+                background-color: #1a1a2e;
+                font-size: 14px;
+                color: #aaaaaa;
+            }
+
+            ul {
+                list-style-type: none;
+                padding: 0;
+            }
+
+            li {
+                background-color: #1f1f3b;
+                padding: 10px;
+                margin-top: 10px;
+                border-radius: 5px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 20px;
+            }
+
+            th,
+            td {
+                border: 1px solid #3a3a5a;
+                padding: 10px;
+                text-align: center;
+            }
+
+            th {
+                background-color: #2a2a4a;
+            }
+
+            .hidden {
+                display: none;
+            }
+
+            .input-row {
+                margin-top: 20px;
+            }
+        </style>
+    </head>
+
+    <body>
+        <header>
+            <img
+                src="/Logo Image/ToyoTech_Logo.png"
+                alt="ToyoTech Logo"
+                onclick="window.location.href='/'"
+                style="cursor: pointer"
+            />
+            <h1>ToyoTech Private</h1>
+            <button
+                onclick="Logout()"
+                style="
+                    padding: 8px 16px;
+                    background-color: #9b9bff;
+                    border: none;
+                    border-radius: 6px;
+                    color: white;
+                    cursor: pointer;
+                "
+            >
+                로그아웃
+            </button>
+        </header>
+
+        <main>
+            <!-- ToDo 목록 -->
+            <section id="todoSection" class="hidden">
+                <h2>ToDo 리스트</h2>
+                <input type="text" id="todoInput" placeholder="할 일 입력" />
+                <button onclick="AddTodo()">추가</button>
+                <ul id="todoList"></ul>
+            </section>
+
+            <!-- 계정 정보 테이블 -->
+            <section id="accountSection" class="hidden">
+                <h2>사이트 계정 정보</h2>
+                <div class="input-row">
+                    <input
+                        type="text"
+                        id="siteName"
+                        placeholder="사이트명"
+                        style="margin-bottom: 10px"
+                    />
+                    <input
+                        type="text"
+                        id="siteId"
+                        placeholder="아이디"
+                        style="margin-bottom: 10px"
+                    />
+                    <input type="text" id="sitePw" placeholder="비밀번호" />
+                    <button onclick="AddAccount()">추가</button>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>사이트</th>
+                            <th>아이디</th>
+                            <th>비밀번호</th>
+                            <th>작업</th>
+                        </tr>
+                    </thead>
+                    <tbody id="accountTableBody"></tbody>
+                </table>
+            </section>
+        </main>
+
+        <footer>&copy; 2025 ToyoTech. All rights reserved.</footer>
+
+        <script type="module">
+            import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+            import {
+                getAuth,
+                onAuthStateChanged,
+                signOut,
+            } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+
+            const firebaseConfig = {
+                apiKey: "AIzaSyARGW_mHhw5A8S2ImeNW3fEXrxBExgcxGg",
+                authDomain: "toyotech-web.firebaseapp.com",
+                projectId: "toyotech-web",
+                storageBucket: "toyotech-web.appspot.com",
+                messagingSenderId: "132249097383",
+                appId: "1:132249097383:web:f7e07df7bcfa6c2c3cf848",
             };
-            editBtn.style.marginLeft = "35px"; 
 
-            const delBtn = document.createElement("button");
-            delBtn.textContent = "삭제";
-            delBtn.onclick = function () {
-                li.remove();
-                SaveTodos();
-            };
-            editBtn.style.marginRight = "3px"; 
+            const app = initializeApp(firebaseConfig);
+            const auth = getAuth(app);
 
-            buttonContainer.appendChild(editBtn);
-            buttonContainer.appendChild(delBtn);
-            li.appendChild(span);
-            li.appendChild(buttonContainer);
-            return li;
-        }
-
-        function EditTodo(span, li) {
-            const input = document.createElement("input");
-            input.type = "text";
-            input.value = span.textContent;
-            input.style.flexGrow = "1";
-            input.onkeydown = function (event) {
-                if (event.key === "Enter") {
-                    span.textContent = input.value.trim();
-                    li.replaceChild(span, input);
-                    SaveTodos();
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    document
+                        .getElementById("todoSection")
+                        .classList.remove("hidden");
+                    document
+                        .getElementById("accountSection")
+                        .classList.remove("hidden");
+                    LoadTodos();
+                    LoadAccounts();
+                } else {
+                    window.location.href = "/private/login/";
                 }
-            };
-            li.replaceChild(input, span);
-            input.focus();
-        }
-
-        function SaveTodos() {
-            const todos = [];
-            document.querySelectorAll("#todoList li span").forEach(span => {
-                todos.push(span.textContent);
             });
-            localStorage.setItem("privateTodos", JSON.stringify(todos));
-        }
 
-        function LoadTodos() {
-            const saved = localStorage.getItem("privateTodos");
-            if (!saved) return;
-            const todos = JSON.parse(saved);
-            todos.forEach(text => {
+            window.Logout = function () {
+                signOut(auth).then(() => {
+                    window.location.href = "/private/login/";
+                });
+            };
+
+            window.AddTodo = function () {
+                const todoInput = document.getElementById("todoInput");
+                const text = todoInput.value.trim();
+                if (text === "") return;
+
                 const li = CreateTodoElement(text);
                 document.getElementById("todoList").appendChild(li);
-            });
-        }
+                todoInput.value = "";
+                SaveTodos();
+            };
 
-        window.AddAccount = function () {
-    const site = document.getElementById("siteName").value.trim();
-    const id = document.getElementById("siteId").value.trim();
-    const pw = document.getElementById("sitePw").value.trim();
-    if (!site || !id || !pw) return;
+            function CreateTodoElement(text) {
+                const li = document.createElement("li");
 
-    const tbody = document.getElementById("accountTableBody");
-    const tr = document.createElement("tr");
+                const span = document.createElement("span");
+                span.textContent = text;
 
-    tr.innerHTML = `
+                const buttonContainer = document.createElement("div");
+                buttonContainer.style.display = "flex";
+                buttonContainer.style.justifyContent = "space-between";
+                buttonContainer.style.width = "150px";
+
+                const editBtn = document.createElement("button");
+                editBtn.textContent = "수정";
+                editBtn.onclick = function () {
+                    EditTodo(span, li);
+                };
+                editBtn.style.marginLeft = "35px";
+
+                const delBtn = document.createElement("button");
+                delBtn.textContent = "삭제";
+                delBtn.onclick = function () {
+                    li.remove();
+                    SaveTodos();
+                };
+                editBtn.style.marginRight = "3px";
+
+                buttonContainer.appendChild(editBtn);
+                buttonContainer.appendChild(delBtn);
+                li.appendChild(span);
+                li.appendChild(buttonContainer);
+                return li;
+            }
+
+            function EditTodo(span, li) {
+                const input = document.createElement("input");
+                input.type = "text";
+                input.value = span.textContent;
+                input.style.flexGrow = "1";
+                input.onkeydown = function (event) {
+                    if (event.key === "Enter") {
+                        span.textContent = input.value.trim();
+                        li.replaceChild(span, input);
+                        SaveTodos();
+                    }
+                };
+                li.replaceChild(input, span);
+                input.focus();
+            }
+
+            function SaveTodos() {
+                const todos = [];
+                document
+                    .querySelectorAll("#todoList li span")
+                    .forEach((span) => {
+                        todos.push(span.textContent);
+                    });
+                localStorage.setItem("privateTodos", JSON.stringify(todos));
+            }
+
+            function LoadTodos() {
+                const saved = localStorage.getItem("privateTodos");
+                if (!saved) return;
+                const todos = JSON.parse(saved);
+                todos.forEach((text) => {
+                    const li = CreateTodoElement(text);
+                    document.getElementById("todoList").appendChild(li);
+                });
+            }
+
+            window.AddAccount = function () {
+                const site = document.getElementById("siteName").value.trim();
+                const id = document.getElementById("siteId").value.trim();
+                const pw = document.getElementById("sitePw").value.trim();
+                if (!site || !id || !pw) return;
+
+                const tbody = document.getElementById("accountTableBody");
+                const tr = document.createElement("tr");
+
+                tr.innerHTML = `
         <td>${site}</td>
         <td>${id}</td>
         <td>${pw}</td>
@@ -298,44 +328,43 @@
             <button onclick="window.EditAccount(this)">수정</button>
             <button onclick="window.DeleteAccount(this)">삭제</button>
         </td>`;
-    tbody.appendChild(tr);
+                tbody.appendChild(tr);
 
-    document.getElementById("siteName").value = "";
-    document.getElementById("siteId").value = "";
-    document.getElementById("sitePw").value = "";
+                document.getElementById("siteName").value = "";
+                document.getElementById("siteId").value = "";
+                document.getElementById("sitePw").value = "";
 
-    SaveAccounts();
-};
+                SaveAccounts();
+            };
 
-window.DeleteAccount = function (button) {
-    const row = button.closest("tr");
-    row.remove();
-    SaveAccounts();
-};
+            window.DeleteAccount = function (button) {
+                const row = button.closest("tr");
+                row.remove();
+                SaveAccounts();
+            };
 
-
-        function SaveAccounts() {
-            const rows = document.querySelectorAll("#accountTableBody tr");
-            const accounts = [];
-            rows.forEach(row => {
-                const cells = row.querySelectorAll("td");
-                accounts.push({
-                    site: cells[0].textContent,
-                    id: cells[1].textContent,
-                    pw: cells[2].textContent
+            function SaveAccounts() {
+                const rows = document.querySelectorAll("#accountTableBody tr");
+                const accounts = [];
+                rows.forEach((row) => {
+                    const cells = row.querySelectorAll("td");
+                    accounts.push({
+                        site: cells[0].textContent,
+                        id: cells[1].textContent,
+                        pw: cells[2].textContent,
+                    });
                 });
-            });
-            localStorage.setItem("siteAccounts", JSON.stringify(accounts));
-        }
+                localStorage.setItem("siteAccounts", JSON.stringify(accounts));
+            }
 
-        function LoadAccounts() {
-            const saved = localStorage.getItem("siteAccounts");
-            if (!saved) return;
-            const accounts = JSON.parse(saved);
-            const tbody = document.getElementById("accountTableBody");
-            accounts.forEach(acc => {
-                const tr = document.createElement("tr");
-                tr.innerHTML = `
+            function LoadAccounts() {
+                const saved = localStorage.getItem("siteAccounts");
+                if (!saved) return;
+                const accounts = JSON.parse(saved);
+                const tbody = document.getElementById("accountTableBody");
+                accounts.forEach((acc) => {
+                    const tr = document.createElement("tr");
+                    tr.innerHTML = `
                     <td>${acc.site}</td>
                     <td>${acc.id}</td>
                     <td>${acc.pw}</td>
@@ -343,58 +372,63 @@ window.DeleteAccount = function (button) {
                         <button onclick="EditAccount(this)">수정</button>
                         <button onclick="DeleteAccount(this)">삭제</button>
                     </td>`;
-                tbody.appendChild(tr);
-            });
-        }
+                    tbody.appendChild(tr);
+                });
+            }
 
-        window.EditAccount = function (button) {
-    const row = button.closest("tr");
-    const cells = row.querySelectorAll("td");
+            window.EditAccount = function (button) {
+                const row = button.closest("tr");
+                const cells = row.querySelectorAll("td");
 
-    const site = cells[0].textContent;
-    const id = cells[1].textContent;
-    const pw = cells[2].textContent;
+                const site = cells[0].textContent;
+                const id = cells[1].textContent;
+                const pw = cells[2].textContent;
 
-    cells[0].innerHTML = `<input type="text" value="${site}">`;
-    cells[1].innerHTML = `<input type="text" value="${id}">`;
-    cells[2].innerHTML = `<input type="text" value="${pw}">`;
+                cells[0].innerHTML = `<input type="text" value="${site}">`;
+                cells[1].innerHTML = `<input type="text" value="${id}">`;
+                cells[2].innerHTML = `<input type="text" value="${pw}">`;
 
-    button.textContent = "저장";
-    button.onclick = function () {
-        const newSite = cells[0].querySelector("input").value.trim();
-        const newId = cells[1].querySelector("input").value.trim();
-        const newPw = cells[2].querySelector("input").value.trim();
+                button.textContent = "저장";
+                button.onclick = function () {
+                    const newSite = cells[0]
+                        .querySelector("input")
+                        .value.trim();
+                    const newId = cells[1].querySelector("input").value.trim();
+                    const newPw = cells[2].querySelector("input").value.trim();
 
-        if (!newSite || !newId || !newPw) {
-            alert("빈 칸 없이 입력해주세요.");
-            return;
-        }
+                    if (!newSite || !newId || !newPw) {
+                        alert("빈 칸 없이 입력해주세요.");
+                        return;
+                    }
 
-        cells[0].textContent = newSite;
-        cells[1].textContent = newId;
-        cells[2].textContent = newPw;
+                    cells[0].textContent = newSite;
+                    cells[1].textContent = newId;
+                    cells[2].textContent = newPw;
 
-        button.textContent = "수정";
-        button.onclick = function () {
-            window.EditAccount(button);
-        };
+                    button.textContent = "수정";
+                    button.onclick = function () {
+                        window.EditAccount(button);
+                    };
 
-        SaveAccounts();
-    };
-};
+                    SaveAccounts();
+                };
+            };
 
-document.getElementById("sitePw").addEventListener("keydown", function (event) {
-    if (event.key === "Enter") {
-        window.AddAccount();
-    }
-});
+            document
+                .getElementById("sitePw")
+                .addEventListener("keydown", function (event) {
+                    if (event.key === "Enter") {
+                        window.AddAccount();
+                    }
+                });
 
-document.getElementById("todoInput").addEventListener("keydown", function (event) {
-    if (event.key === "Enter") {
-        AddTodo();
-    }
-});
-    </script>
-</body>
-
+            document
+                .getElementById("todoInput")
+                .addEventListener("keydown", function (event) {
+                    if (event.key === "Enter") {
+                        AddTodo();
+                    }
+                });
+        </script>
+    </body>
 </html>
