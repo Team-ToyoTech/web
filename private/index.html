@@ -129,7 +129,6 @@
 
     <button onclick="Logout()">로그아웃</button>
 
-<<<<<<< HEAD
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
@@ -148,13 +147,6 @@
 
         onAuthStateChanged(auth, (user) => {
             if (user) {
-=======
-        function CheckAccess() {
-            if (sessionStorage.getItem("authenticated") !== "true") {
-                location.href = "/private/login/index.html";
-            }
-            else {
->>>>>>> 587b5d50b664dab7bb2ce12397444fb3e8c63936
                 document.getElementById("todoSection").classList.remove("hidden");
                 document.getElementById("accountSection").classList.remove("hidden");
                 LoadTodos();
