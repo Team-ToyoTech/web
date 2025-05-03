@@ -138,7 +138,7 @@
         <!-- ToDo 목록 -->
         <section id="todoSection" class="hidden">
             <h2>ToDo 리스트</h2>
-            <input type="text" id="todoInput" placeholder="할 일 입력" onkeydown="if(event.key==='Enter'){AddTodo();}">
+            <input type="text" id="todoInput" placeholder="할 일 입력">
             <button onclick="AddTodo()">추가</button>
             <ul id="todoList"></ul>
         </section>
@@ -149,7 +149,7 @@
             <div class="input-row">
                 <input type="text" id="siteName" placeholder="사이트명" style="margin-bottom: 10px;">
                 <input type="text" id="siteId" placeholder="아이디" style="margin-bottom: 10px;">
-                <input type="text" id="sitePw" placeholder="비밀번호" onkeydown="if(event.key==='Enter'){AddAccount();}">
+                <input type="text" id="sitePw" placeholder="비밀번호">
                 <button onclick="AddAccount()">추가</button>
             </div>
             <table>
@@ -203,11 +203,11 @@
             });
         };
 
-        function AddTodo() {
+        window.AddTodo = function () {
             const todoInput = document.getElementById("todoInput");
             const text = todoInput.value.trim();
             if (text === "") return;
-
+            
             const li = CreateTodoElement(text);
             document.getElementById("todoList").appendChild(li);
             todoInput.value = "";
@@ -281,37 +281,38 @@
             });
         }
 
-        function AddAccount() {
-            const site = document.getElementById("siteName").value.trim();
-            const id = document.getElementById("siteId").value.trim();
-            const pw = document.getElementById("sitePw").value.trim();
-            if (!site || !id || !pw) return;
+        window.AddAccount = function () {
+    const site = document.getElementById("siteName").value.trim();
+    const id = document.getElementById("siteId").value.trim();
+    const pw = document.getElementById("sitePw").value.trim();
+    if (!site || !id || !pw) return;
 
-            const tbody = document.getElementById("accountTableBody");
-            const tr = document.createElement("tr");
+    const tbody = document.getElementById("accountTableBody");
+    const tr = document.createElement("tr");
 
-            tr.innerHTML = `
-                <td>${site}</td>
-                <td>${id}</td>
-                <td>${pw}</td>
-                <td>
-                    <button onclick="EditAccount(this)">수정</button>
-                    <button onclick="DeleteAccount(this)">삭제</button>
-                </td>`;
-            tbody.appendChild(tr);
+    tr.innerHTML = `
+        <td>${site}</td>
+        <td>${id}</td>
+        <td>${pw}</td>
+        <td>
+            <button onclick="window.EditAccount(this)">수정</button>
+            <button onclick="window.DeleteAccount(this)">삭제</button>
+        </td>`;
+    tbody.appendChild(tr);
 
-            document.getElementById("siteName").value = "";
-            document.getElementById("siteId").value = "";
-            document.getElementById("sitePw").value = "";
+    document.getElementById("siteName").value = "";
+    document.getElementById("siteId").value = "";
+    document.getElementById("sitePw").value = "";
 
-            SaveAccounts();
-        }
+    SaveAccounts();
+};
 
-        function DeleteAccount(button) {
-            const row = button.closest("tr");
-            row.remove();
-            SaveAccounts();
-        }
+window.DeleteAccount = function (button) {
+    const row = button.closest("tr");
+    row.remove();
+    SaveAccounts();
+};
+
 
         function SaveAccounts() {
             const rows = document.querySelectorAll("#accountTableBody tr");
@@ -346,41 +347,53 @@
             });
         }
 
-        function EditAccount(button) {
-            const row = button.closest("tr");
-            const cells = row.querySelectorAll("td");
+        window.EditAccount = function (button) {
+    const row = button.closest("tr");
+    const cells = row.querySelectorAll("td");
 
-            const site = cells[0].textContent;
-            const id = cells[1].textContent;
-            const pw = cells[2].textContent;
+    const site = cells[0].textContent;
+    const id = cells[1].textContent;
+    const pw = cells[2].textContent;
 
-            cells[0].innerHTML = `<input type="text" value="${site}">`;
-            cells[1].innerHTML = `<input type="text" value="${id}">`;
-            cells[2].innerHTML = `<input type="text" value="${pw}">`;
+    cells[0].innerHTML = `<input type="text" value="${site}">`;
+    cells[1].innerHTML = `<input type="text" value="${id}">`;
+    cells[2].innerHTML = `<input type="text" value="${pw}">`;
 
-            button.textContent = "저장";
-            button.onclick = function () {
-            const newSite = cells[0].querySelector("input").value.trim();
-            const newId = cells[1].querySelector("input").value.trim();
-            const newPw = cells[2].querySelector("input").value.trim();
+    button.textContent = "저장";
+    button.onclick = function () {
+        const newSite = cells[0].querySelector("input").value.trim();
+        const newId = cells[1].querySelector("input").value.trim();
+        const newPw = cells[2].querySelector("input").value.trim();
 
-            if (!newSite || !newId || !newPw) {
-                alert("빈 칸 없이 입력해주세요.");
-                return;
-            }
+        if (!newSite || !newId || !newPw) {
+            alert("빈 칸 없이 입력해주세요.");
+            return;
+        }
 
-            cells[0].textContent = newSite;
-            cells[1].textContent = newId;
-            cells[2].textContent = newPw;
+        cells[0].textContent = newSite;
+        cells[1].textContent = newId;
+        cells[2].textContent = newPw;
 
-            button.textContent = "수정";
-            button.onclick = function () {
-            EditAccount(button);
+        button.textContent = "수정";
+        button.onclick = function () {
+            window.EditAccount(button);
         };
 
         SaveAccounts();
     };
-}
+};
+
+document.getElementById("sitePw").addEventListener("keydown", function (event) {
+    if (event.key === "Enter") {
+        window.AddAccount();
+    }
+});
+
+document.getElementById("todoInput").addEventListener("keydown", function (event) {
+    if (event.key === "Enter") {
+        AddTodo();
+    }
+});
     </script>
 </body>
 
