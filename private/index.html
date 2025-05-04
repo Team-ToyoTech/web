@@ -19,8 +19,20 @@
             }
 
             header h1 {
-                font-size: 24px;
+                position: absolute;
+                left: 50%;
+                transform: translateX(-50%);
                 margin: 0;
+            }
+
+            header #welcomeMessage {
+                margin-left: auto;
+                color: white;
+                font-size: 18px;
+            }
+
+            header button {
+                margin-left: 10px;
             }
 
             main {
@@ -130,7 +142,8 @@
                 onclick="window.location.href='/'"
                 style="cursor: pointer"
             />
-            <h1>ToyoTech Private</h1>
+            <h1>Private</h1>
+            <span id="welcomeMessage"></span>
             <button
                 onclick="Logout()"
                 style="
@@ -220,6 +233,12 @@
                         .classList.remove("hidden");
                     LoadTodos();
                     LoadAccounts();
+
+                    const userName =
+                        user.displayName || user.email.split("@")[0];
+                    const userNameElement =
+                        document.getElementById("welcomeMessage");
+                    userNameElement.textContent = `환영합니다, ${userName}`;
                 } else {
                     window.location.href = "/private/login/";
                 }
