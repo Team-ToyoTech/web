@@ -238,7 +238,7 @@
                         user.displayName || user.email.split("@")[0];
                     const userNameElement =
                         document.getElementById("welcomeMessage");
-                    userNameElement.textContent = `환영합니다, ${userName}`;
+                    userNameElement.textContent = `${userName}`;
                 } else {
                     window.location.href = "/private/login/";
                 }
