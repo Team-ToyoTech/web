@@ -142,7 +142,7 @@
                 onclick="window.location.href='/'"
                 style="cursor: pointer"
             />
-            <h1>Private</h1>
+            <h1>ToyoTech Private</h1>
             <span id="welcomeMessage"></span>
             <button
                 onclick="Logout()"
@@ -234,8 +234,7 @@
                     LoadTodos();
                     LoadAccounts();
 
-                    const userName =
-                        user.displayName || user.email;
+                    const userName = user.displayName || user.email;
                     const userNameElement =
                         document.getElementById("welcomeMessage");
                     userNameElement.textContent = `${userName}`;
