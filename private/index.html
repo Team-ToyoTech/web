@@ -210,6 +210,13 @@
                 onAuthStateChanged,
                 signOut,
             } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+            import {
+                getFirestore,
+                collection,
+                addDoc,
+                getDocs,
+                onSnapshot
+            } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
             const firebaseConfig = {
                 apiKey: "AIzaSyARGW_mHhw5A8S2ImeNW3fEXrxBExgcxGg",
@@ -222,6 +229,7 @@
 
             const app = initializeApp(firebaseConfig);
             const auth = getAuth(app);
+            const db = getFirestore(app);
 
             onAuthStateChanged(auth, (user) => {
                 if (user) {
@@ -233,220 +241,89 @@
                         .classList.remove("hidden");
                     LoadTodos();
                     LoadAccounts();
-
-                    const userName = user.displayName || user.email;
-                    const userNameElement =
-                        document.getElementById("welcomeMessage");
-                    userNameElement.textContent = `${userName}`;
                 } else {
                     window.location.href = "/private/login/";
                 }
             });
+
+            window.AddTodo = async function () {
+                const todoInput = document.getElementById("todoInput");
+                const text = todoInput.value.trim();
+                if (text === "") return;
+
+                try {
+                    await addDoc(collection(db, "Private_ToDo"), { text });
+                    todoInput.value = "";
+                } catch (error) {
+                    console.error("Error adding ToDo: ", error);
+                }
+            };
+
+            function LoadTodos() {
+                const todoList = document.getElementById("todoList");
+                todoList.innerHTML = ""; // Clear existing items
+
+                onSnapshot(collection(db, "Private_ToDo"), (snapshot) => {
+                    snapshot.docChanges().forEach((change) => {
+                        if (change.type === "added") {
+                            const li = document.createElement("li");
+                            li.textContent = change.doc.data().text;
+                            todoList.appendChild(li);
+                        }
+                    });
+                });
+            }
+
+            window.AddAccount = async function () {
+                const siteName = document.getElementById("siteName").value.trim();
+                const siteId = document.getElementById("siteId").value.trim();
+                const sitePw = document.getElementById("sitePw").value.trim();
+                if (!siteName || !siteId || !sitePw) return;
+
+                try {
+                    await addDoc(collection(db, "Private_Site"), {
+                        Name: siteName,
+                        ID: siteId,
+                        PW: sitePw,
+                    });
+
+                    document.getElementById("siteName").value = "";
+                    document.getElementById("siteId").value = "";
+                    document.getElementById("sitePw").value = "";
+                } catch (error) {
+                    console.error("Error adding account: ", error);
+                }
+            };
+
+            function LoadAccounts() {
+                const tbody = document.getElementById("accountTableBody");
+                tbody.innerHTML = ""; // Clear existing rows
+
+                onSnapshot(collection(db, "Private_Site"), (snapshot) => {
+                    snapshot.docChanges().forEach((change) => {
+                        if (change.type === "added") {
+                            const data = change.doc.data();
+                            const tr = document.createElement("tr");
+                            tr.innerHTML = `
+                                <td>${data.Name}</td>
+                                <td>${data.ID}</td>
+                                <td>${data.PW}</td>
+                                <td>
+                                    <button onclick="EditAccount(this)">수정</button>
+                                    <button onclick="DeleteAccount(this)">삭제</button>
+                                </td>
+                            `;
+                            tbody.appendChild(tr);
+                        }
+                    });
+                });
+            }
 
             window.Logout = function () {
                 signOut(auth).then(() => {
                     window.location.href = "/private/login/";
                 });
             };
-
-            window.AddTodo = function () {
-                const todoInput = document.getElementById("todoInput");
-                const text = todoInput.value.trim();
-                if (text === "") return;
-
-                const li = CreateTodoElement(text);
-                document.getElementById("todoList").appendChild(li);
-                todoInput.value = "";
-                SaveTodos();
-            };
-
-            function CreateTodoElement(text) {
-                const li = document.createElement("li");
-
-                const span = document.createElement("span");
-                span.textContent = text;
-
-                const buttonContainer = document.createElement("div");
-                buttonContainer.style.display = "flex";
-                buttonContainer.style.justifyContent = "space-between";
-                buttonContainer.style.width = "150px";
-
-                const editBtn = document.createElement("button");
-                editBtn.textContent = "수정";
-                editBtn.onclick = function () {
-                    EditTodo(span, li);
-                };
-                editBtn.style.marginLeft = "35px";
-
-                const delBtn = document.createElement("button");
-                delBtn.textContent = "삭제";
-                delBtn.onclick = function () {
-                    li.remove();
-                    SaveTodos();
-                };
-                editBtn.style.marginRight = "3px";
-
-                buttonContainer.appendChild(editBtn);
-                buttonContainer.appendChild(delBtn);
-                li.appendChild(span);
-                li.appendChild(buttonContainer);
-                return li;
-            }
-
-            function EditTodo(span, li) {
-                const input = document.createElement("input");
-                input.type = "text";
-                input.value = span.textContent;
-                input.style.flexGrow = "1";
-                input.onkeydown = function (event) {
-                    if (event.key === "Enter") {
-                        span.textContent = input.value.trim();
-                        li.replaceChild(span, input);
-                        SaveTodos();
-                    }
-                };
-                li.replaceChild(input, span);
-                input.focus();
-            }
-
-            function SaveTodos() {
-                const todos = [];
-                document
-                    .querySelectorAll("#todoList li span")
-                    .forEach((span) => {
-                        todos.push(span.textContent);
-                    });
-                localStorage.setItem("privateTodos", JSON.stringify(todos));
-            }
-
-            function LoadTodos() {
-                const saved = localStorage.getItem("privateTodos");
-                if (!saved) return;
-                const todos = JSON.parse(saved);
-                todos.forEach((text) => {
-                    const li = CreateTodoElement(text);
-                    document.getElementById("todoList").appendChild(li);
-                });
-            }
-
-            window.AddAccount = function () {
-                const site = document.getElementById("siteName").value.trim();
-                const id = document.getElementById("siteId").value.trim();
-                const pw = document.getElementById("sitePw").value.trim();
-                if (!site || !id || !pw) return;
-
-                const tbody = document.getElementById("accountTableBody");
-                const tr = document.createElement("tr");
-
-                tr.innerHTML = `
-        <td>${site}</td>
-        <td>${id}</td>
-        <td>${pw}</td>
-        <td>
-            <button onclick="window.EditAccount(this)">수정</button>
-            <button onclick="window.DeleteAccount(this)">삭제</button>
-        </td>`;
-                tbody.appendChild(tr);
-
-                document.getElementById("siteName").value = "";
-                document.getElementById("siteId").value = "";
-                document.getElementById("sitePw").value = "";
-
-                SaveAccounts();
-            };
-
-            window.DeleteAccount = function (button) {
-                const row = button.closest("tr");
-                row.remove();
-                SaveAccounts();
-            };
-
-            function SaveAccounts() {
-                const rows = document.querySelectorAll("#accountTableBody tr");
-                const accounts = [];
-                rows.forEach((row) => {
-                    const cells = row.querySelectorAll("td");
-                    accounts.push({
-                        site: cells[0].textContent,
-                        id: cells[1].textContent,
-                        pw: cells[2].textContent,
-                    });
-                });
-                localStorage.setItem("siteAccounts", JSON.stringify(accounts));
-            }
-
-            function LoadAccounts() {
-                const saved = localStorage.getItem("siteAccounts");
-                if (!saved) return;
-                const accounts = JSON.parse(saved);
-                const tbody = document.getElementById("accountTableBody");
-                accounts.forEach((acc) => {
-                    const tr = document.createElement("tr");
-                    tr.innerHTML = `
-                    <td>${acc.site}</td>
-                    <td>${acc.id}</td>
-                    <td>${acc.pw}</td>
-                    <td>
-                        <button onclick="EditAccount(this)">수정</button>
-                        <button onclick="DeleteAccount(this)">삭제</button>
-                    </td>`;
-                    tbody.appendChild(tr);
-                });
-            }
-
-            window.EditAccount = function (button) {
-                const row = button.closest("tr");
-                const cells = row.querySelectorAll("td");
-
-                const site = cells[0].textContent;
-                const id = cells[1].textContent;
-                const pw = cells[2].textContent;
-
-                cells[0].innerHTML = `<input type="text" value="${site}">`;
-                cells[1].innerHTML = `<input type="text" value="${id}">`;
-                cells[2].innerHTML = `<input type="text" value="${pw}">`;
-
-                button.textContent = "저장";
-                button.onclick = function () {
-                    const newSite = cells[0]
-                        .querySelector("input")
-                        .value.trim();
-                    const newId = cells[1].querySelector("input").value.trim();
-                    const newPw = cells[2].querySelector("input").value.trim();
-
-                    if (!newSite || !newId || !newPw) {
-                        alert("빈 칸 없이 입력해주세요.");
-                        return;
-                    }
-
-                    cells[0].textContent = newSite;
-                    cells[1].textContent = newId;
-                    cells[2].textContent = newPw;
-
-                    button.textContent = "수정";
-                    button.onclick = function () {
-                        window.EditAccount(button);
-                    };
-
-                    SaveAccounts();
-                };
-            };
-
-            document
-                .getElementById("sitePw")
-                .addEventListener("keydown", function (event) {
-                    if (event.key === "Enter") {
-                        window.AddAccount();
-                    }
-                });
-
-            document
-                .getElementById("todoInput")
-                .addEventListener("keydown", function (event) {
-                    if (event.key === "Enter") {
-                        AddTodo();
-                    }
-                });
         </script>
     </body>
 </html>
