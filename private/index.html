@@ -319,7 +319,10 @@
                 if (text === "") return;
 
                 try {
-                    await addDoc(collection(db, "Private_ToDo"), { text });
+                    await addDoc(collection(db, "Private_ToDo"), {
+                        text,
+                        timestamp: new Date() // 추가된 시간 저장
+                    });
                     todoInput.value = "";
                 } catch (error) {
                     console.error("Error adding ToDo: ", error);
