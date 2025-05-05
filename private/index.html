@@ -84,6 +84,10 @@
                 font-size: 14px;
             }
 
+            .add-todo-btn {
+                margin-left: -4px;
+            }
+
             footer {
                 text-align: center;
                 padding: 20px;
@@ -98,13 +102,21 @@
             }
 
             li {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
                 background-color: #1f1f3b;
                 padding: 10px;
                 margin-top: 10px;
                 border-radius: 5px;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
+            }
+
+            li span {
+                flex-grow: 1;
+            }
+
+            li button {
+                margin-left: 10px;
             }
 
             table {
@@ -142,7 +154,7 @@
                 onclick="window.location.href='/'"
                 style="cursor: pointer"
             />
-            <h1>ToyoTech Private</h1>
+            <h1>Private</h1>
             <span id="welcomeMessage"></span>
             <button
                 onclick="Logout()"
@@ -164,7 +176,7 @@
             <section id="todoSection" class="hidden">
                 <h2>ToDo 리스트</h2>
                 <input type="text" id="todoInput" placeholder="할 일 입력" />
-                <button onclick="AddTodo()">추가</button>
+                <button class="add-todo-btn" onclick="AddTodo()">추가</button>
                 <ul id="todoList"></ul>
             </section>
 
@@ -216,6 +228,9 @@
                 addDoc,
                 getDocs,
                 onSnapshot,
+                doc,
+                updateDoc,
+                deleteDoc,
             } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
             const firebaseConfig = {
@@ -239,10 +254,58 @@
                     document
                         .getElementById("accountSection")
                         .classList.remove("hidden");
+
                     LoadTodos();
                     LoadAccounts();
+
+                    const userName = user.displayName || user.email;
+                    const userNameElement =
+                        document.getElementById("welcomeMessage");
+                    userNameElement.textContent = `${userName}`;
                 } else {
                     window.location.href = "/private/login/";
+                }
+            });
+
+            document
+                .getElementById("todoInput")
+                .addEventListener("keydown", function (event) {
+                    if (event.key === "Enter") {
+                        AddTodo();
+                    }
+                });
+
+            document
+                .getElementById("sitePw")
+                .addEventListener("keydown", function (event) {
+                    if (event.key === "Enter") {
+                        AddAccount();
+                    }
+                });
+
+            document.addEventListener("keydown", function (event) {
+                if (event.key === "Enter") {
+                    const activeElement = document.activeElement;
+
+                    if (
+                        activeElement.tagName === "INPUT" &&
+                        activeElement.closest("li")
+                    ) {
+                        const li = activeElement.closest("li");
+                        const saveBtn = li.querySelector(
+                            "button:nth-of-type(1)"
+                        ); // 저장 버튼만 클릭
+                        if (saveBtn) saveBtn.click();
+                    } else if (
+                        activeElement.tagName === "INPUT" &&
+                        activeElement.closest("tr")
+                    ) {
+                        const row = activeElement.closest("tr");
+                        const saveBtn = row.querySelector(
+                            "button:first-of-type"
+                        ); // 저장 버튼만 클릭
+                        if (saveBtn) saveBtn.click();
+                    }
                 }
             });
 
@@ -267,12 +330,74 @@
                     snapshot.docChanges().forEach((change) => {
                         if (change.type === "added") {
                             const li = document.createElement("li");
-                            li.textContent = change.doc.data().text;
+                            li.setAttribute("data-id", change.doc.id);
+
+                            const span = document.createElement("span");
+                            span.textContent = change.doc.data().text;
+
+                            const editBtn = document.createElement("button");
+                            editBtn.textContent = "수정";
+                            editBtn.onclick = function () {
+                                EditTodo(li, span);
+                            };
+
+                            const delBtn = document.createElement("button");
+                            delBtn.textContent = "삭제";
+                            delBtn.onclick = function () {
+                                DeleteTodo(li);
+                            };
+
+                            li.appendChild(span);
+                            li.appendChild(editBtn);
+                            li.appendChild(delBtn);
                             todoList.appendChild(li);
                         }
                     });
                 });
             }
+
+            window.EditTodo = async function (li, span) {
+                const input = document.createElement("input");
+                input.type = "text";
+                input.value = span.textContent;
+
+                const saveBtn = document.createElement("button");
+                saveBtn.textContent = "저장";
+                saveBtn.onclick = async function () {
+                    const newText = input.value.trim();
+                    if (!newText) {
+                        alert("내용을 입력해주세요.");
+                        return;
+                    }
+
+                    try {
+                        const docId = li.getAttribute("data-id");
+                        const docRef = doc(db, "Private_ToDo", docId);
+                        await updateDoc(docRef, { text: newText });
+
+                        span.textContent = newText;
+                        li.replaceChild(span, input);
+                        li.replaceChild(editBtn, saveBtn);
+                    } catch (error) {
+                        console.error("Error updating ToDo: ", error);
+                    }
+                };
+
+                const editBtn = li.querySelector("button:first-of-type");
+                li.replaceChild(input, span);
+                li.replaceChild(saveBtn, editBtn);
+            };
+
+            window.DeleteTodo = async function (li) {
+                try {
+                    const docId = li.getAttribute("data-id");
+                    const docRef = doc(db, "Private_ToDo", docId);
+                    await deleteDoc(docRef);
+                    li.remove();
+                } catch (error) {
+                    console.error("Error deleting ToDo: ", error);
+                }
+            };
 
             window.AddAccount = async function () {
                 const siteName = document
@@ -306,6 +431,7 @@
                         if (change.type === "added") {
                             const data = change.doc.data();
                             const tr = document.createElement("tr");
+                            tr.setAttribute("data-id", change.doc.id);
                             tr.innerHTML = `
                                 <td>${data.Name}</td>
                                 <td>${data.ID}</td>
@@ -320,6 +446,67 @@
                     });
                 });
             }
+
+            window.EditAccount = async function (button) {
+                const row = button.closest("tr");
+                const cells = row.querySelectorAll("td");
+
+                const site = cells[0].textContent;
+                const id = cells[1].textContent;
+                const pw = cells[2].textContent;
+
+                cells[0].innerHTML = `<input type="text" value="${site}">`;
+                cells[1].innerHTML = `<input type="text" value="${id}">`;
+                cells[2].innerHTML = `<input type="text" value="${pw}">`;
+
+                button.textContent = "저장";
+                button.onclick = async function () {
+                    const newSite = cells[0]
+                        .querySelector("input")
+                        .value.trim();
+                    const newId = cells[1].querySelector("input").value.trim();
+                    const newPw = cells[2].querySelector("input").value.trim();
+
+                    if (!newSite || !newId || !newPw) {
+                        alert("빈 칸 없이 입력해주세요.");
+                        return;
+                    }
+
+                    try {
+                        const docId = row.getAttribute("data-id");
+                        const docRef = doc(db, "Private_Site", docId);
+                        await updateDoc(docRef, {
+                            Name: newSite,
+                            ID: newId,
+                            PW: newPw,
+                        });
+
+                        cells[0].textContent = newSite;
+                        cells[1].textContent = newId;
+                        cells[2].textContent = newPw;
+
+                        button.textContent = "수정";
+                        button.onclick = function () {
+                            window.EditAccount(button);
+                        };
+                    } catch (error) {
+                        console.error("Error updating account: ", error);
+                    }
+                };
+            };
+
+            window.DeleteAccount = async function (button) {
+                const row = button.closest("tr");
+                const docId = row.getAttribute("data-id");
+
+                try {
+                    const docRef = doc(db, "Private_Site", docId);
+                    await deleteDoc(docRef);
+                    row.remove();
+                } catch (error) {
+                    console.error("Error deleting account: ", error);
+                }
+            };
 
             window.Logout = function () {
                 signOut(auth).then(() => {
