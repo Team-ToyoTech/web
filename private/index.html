@@ -215,7 +215,7 @@
                 collection,
                 addDoc,
                 getDocs,
-                onSnapshot
+                onSnapshot,
             } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
             const firebaseConfig = {
@@ -275,7 +275,9 @@
             }
 
             window.AddAccount = async function () {
-                const siteName = document.getElementById("siteName").value.trim();
+                const siteName = document
+                    .getElementById("siteName")
+                    .value.trim();
                 const siteId = document.getElementById("siteId").value.trim();
                 const sitePw = document.getElementById("sitePw").value.trim();
                 if (!siteName || !siteId || !sitePw) return;
