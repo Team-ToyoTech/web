@@ -201,7 +201,9 @@
                         style="margin-bottom: 10px"
                     />
                     <input type="text" id="sitePw" placeholder="비밀번호" />
-                    <button class="add-account-btn" onclick="AddAccount()">추가</button>
+                    <button class="add-account-btn" onclick="AddAccount()">
+                        추가
+                    </button>
                 </div>
                 <table>
                     <thead>
@@ -321,7 +323,7 @@
                 try {
                     await addDoc(collection(db, "Private_ToDo"), {
                         text,
-                        timestamp: new Date() // 추가된 시간 저장
+                        timestamp: new Date(), // 추가된 시간 저장
                     });
                     todoInput.value = "";
                 } catch (error) {
