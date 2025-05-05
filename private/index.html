@@ -237,6 +237,8 @@
                 doc,
                 updateDoc,
                 deleteDoc,
+                query,
+                orderBy,
             } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
             const firebaseConfig = {
@@ -335,34 +337,38 @@
                 const todoList = document.getElementById("todoList");
                 todoList.innerHTML = ""; // Clear existing items
 
-                onSnapshot(collection(db, "Private_ToDo"), (snapshot) => {
-                    snapshot.docChanges().forEach((change) => {
-                        if (change.type === "added") {
-                            const li = document.createElement("li");
-                            li.setAttribute("data-id", change.doc.id);
+                onSnapshot(
+                    query(collection(db, "Private_ToDo"), orderBy("timestamp")),
+                    (snapshot) => {
+                        snapshot.docChanges().forEach((change) => {
+                            if (change.type === "added") {
+                                const li = document.createElement("li");
+                                li.setAttribute("data-id", change.doc.id);
 
-                            const span = document.createElement("span");
-                            span.textContent = change.doc.data().text;
+                                const span = document.createElement("span");
+                                span.textContent = change.doc.data().text;
 
-                            const editBtn = document.createElement("button");
-                            editBtn.textContent = "수정";
-                            editBtn.onclick = function () {
-                                EditTodo(li, span);
-                            };
+                                const editBtn =
+                                    document.createElement("button");
+                                editBtn.textContent = "수정";
+                                editBtn.onclick = function () {
+                                    EditTodo(li, span);
+                                };
 
-                            const delBtn = document.createElement("button");
-                            delBtn.textContent = "삭제";
-                            delBtn.onclick = function () {
-                                DeleteTodo(li);
-                            };
+                                const delBtn = document.createElement("button");
+                                delBtn.textContent = "삭제";
+                                delBtn.onclick = function () {
+                                    DeleteTodo(li);
+                                };
 
-                            li.appendChild(span);
-                            li.appendChild(editBtn);
-                            li.appendChild(delBtn);
-                            todoList.appendChild(li);
-                        }
-                    });
-                });
+                                li.appendChild(span);
+                                li.appendChild(editBtn);
+                                li.appendChild(delBtn);
+                                todoList.appendChild(li);
+                            }
+                        });
+                    }
+                );
             }
 
             window.EditTodo = async function (li, span) {
