@@ -176,14 +176,6 @@
         </header>
 
         <main>
-            <!-- ToDo 목록 -->
-            <section id="todoSection" class="hidden">
-                <h2>ToDo 리스트</h2>
-                <input type="text" id="todoInput" placeholder="할 일 입력" />
-                <button class="add-todo-btn" onclick="AddTodo()">추가</button>
-                <ul id="todoList"></ul>
-            </section>
-
             <!-- 계정 정보 테이블 -->
             <section id="accountSection" class="hidden">
                 <h2>사이트 계정 정보</h2>
@@ -216,6 +208,14 @@
                     </thead>
                     <tbody id="accountTableBody"></tbody>
                 </table>
+            </section>
+
+            <!-- ToDo 목록 -->
+            <section id="todoSection" class="hidden">
+                <h2>ToDo 리스트</h2>
+                <input type="text" id="todoInput" placeholder="할 일 입력" />
+                <button class="add-todo-btn" onclick="AddTodo()">추가</button>
+                <ul id="todoList"></ul>
             </section>
         </main>
 
