@@ -1,0 +1,122 @@
+body {
+                margin: 0;
+                font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+                background-color: #0f0f20;
+                color: #ffffff;
+            }
+
+            header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 3px 30px;
+                background-color: #1a1a2e;
+            }
+
+            header img {
+                height: 95px;
+            }
+
+            header h1 {
+                font-size: 24px;
+                margin: 0;
+            }
+
+            main {
+                padding: 40px 50px;
+            }
+
+            section {
+                margin-bottom: 60px;
+            }
+
+            h2 {
+                font-size: 24px;
+                color: #9b9bff;
+                margin-bottom: 20px;
+            }
+
+            .team-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+                gap: 30px;
+            }
+
+            .proj-list {
+                display: flex;
+                flex-direction: column;
+                gap: 30px;
+            }
+
+            .member {
+                background-color: #1f1f3b;
+                border-radius: 12px;
+                padding: 20px;
+                text-align: center;
+                cursor: pointer;
+            }
+
+            .member img {
+                width: 100px;
+                height: 100px;
+                border-radius: 50%;
+                margin-bottom: 15px;
+                border: 2px solid #9b9bff;
+            }
+
+            .member h3 {
+                margin: 10px 0 5px;
+            }
+
+            .member p {
+                font-size: 14px;
+                color: #cccccc;
+            }
+
+            footer {
+                text-align: center;
+                padding: 20px;
+                background-color: #1a1a2e;
+                font-size: 14px;
+                color: #aaaaaa;
+            }
+
+            /* Modal styles */
+            .modal {
+                display: none;
+                position: fixed;
+                z-index: 999;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                overflow: auto;
+                background-color: rgba(0, 0, 0, 0.6);
+            }
+
+            .modal-content {
+                background-color: #1f1f3b;
+                margin: 10% auto;
+                padding: 20px;
+                border: 1px solid #888;
+                width: 80%;
+                max-width: 500px;
+                border-radius: 10px;
+            }
+
+            .close {
+                color: #aaa;
+                float: right;
+                font-size: 28px;
+                font-weight: bold;
+                cursor: pointer;
+            }
+
+            .close:hover {
+                color: #fff;
+            }
+
+            a {
+                color: #9b9bff;
+                text-decoration: underline;
+            }
