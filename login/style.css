@@ -15,8 +15,11 @@ header img {
 header h1 {
     font-size: 24px;
     margin: 0;
-    flex: 1;
-    text-align: center;
+    flex: unset;
+    text-align: right;
+    position: static;
+    left: unset;
+    transform: unset;
 }
 
 main {
