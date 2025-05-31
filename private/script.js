@@ -30,8 +30,10 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+// 인증 체크 및 화면 표시
 onAuthStateChanged(auth, (user) => {
     if (user) {
+        document.body.style.display = ""; // 인증 성공 시 본문 표시
         document.getElementById("todoSection").classList.remove("hidden");
         document.getElementById("accountSection").classList.remove("hidden");
 
