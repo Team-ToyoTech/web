@@ -120,3 +120,7 @@ body {
                 color: #9b9bff;
                 text-decoration: underline;
             }
+
+            #profileTitle {
+                text-align: center;
+            }
