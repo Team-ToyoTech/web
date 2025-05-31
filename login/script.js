@@ -28,7 +28,6 @@ window.Login = async function () {
     }
 };
 
-// 엔터 키로 로그인 실행
 document.addEventListener("keydown", function (event) {
     if (event.key === "Enter") {
         Login();
