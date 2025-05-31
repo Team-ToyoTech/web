@@ -42,7 +42,7 @@ onAuthStateChanged(auth, (user) => {
         const userNameElement = document.getElementById("welcomeMessage");
         userNameElement.textContent = `${userName}`;
     } else {
-        window.location.href = "login/";
+        window.location.href = "/login/";
     }
 });
 
