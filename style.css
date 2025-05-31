@@ -134,3 +134,19 @@ a {
 #profileTitle {
     text-align: center;
 }
+
+.contact-list {
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+.contact-list p {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
