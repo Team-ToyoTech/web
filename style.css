@@ -44,8 +44,19 @@ body {
 
             .proj-list {
                 display: flex;
-                flex-direction: column;
+                flex-direction: row;
                 gap: 30px;
+                flex-wrap: wrap;
+                justify-content: stretch;
+                width: 100%;
+            }
+
+            .proj-list .member {
+                flex: 1 1 0;
+                min-width: 220px;
+                max-width: none;
+                width: 100%;
+                box-sizing: border-box;
             }
 
             .member {
