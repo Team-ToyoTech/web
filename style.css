@@ -175,4 +175,10 @@ a {
     align-items: center; /* 세로(위아래) 가운데 정렬 */
     justify-content: flex-start; /* 좌측 정렬 */
     flex-direction: row;
+    transition: transform 0.18s cubic-bezier(0.4,0,0.2,1), box-shadow 0.18s cubic-bezier(0.4,0,0.2,1);
+}
+
+.contact-section:hover {
+    transform: scale(1.02);
+    box-shadow: 0 6px 24px 0 rgba(155,155,255,0.18);
 }
