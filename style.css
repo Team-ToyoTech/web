@@ -148,6 +148,8 @@ a {
     align-items: center;
     flex-wrap: wrap;
     margin-top: 10px;
+    justify-content: flex-start; /* 좌측 정렬 */
+    height: 100%;
 }
 
 .contact-list p {
@@ -155,4 +157,22 @@ a {
     display: flex;
     align-items: center;
     gap: 8px;
+    height: 100%;
+    justify-content: flex-start; /* 좌측 정렬 */
+}
+
+.contact-section {
+    background-color: #1f1f3b;
+    border-radius: 16px;
+    padding: 32px 24px;
+    margin: 0 0 60px 0;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-shadow: 0 4px 24px 0 rgba(155,155,255,0.10);
+    box-sizing: border-box;
+    display: flex;
+    align-items: center; /* 세로(위아래) 가운데 정렬 */
+    justify-content: flex-start; /* 좌측 정렬 */
+    flex-direction: row;
 }
