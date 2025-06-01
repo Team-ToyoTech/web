@@ -3,7 +3,7 @@ const profiles = {
         title: "조영식 Youngsik Cho",
         content: 
             `도쿄이과대학 창역이공학부 전기전자정보공학과 25학번, 2006년생. 
-            코딩 2015년 시작, 가능 프로그래밍 언어 C, C++, C#, Python, JavaScript, Java.
+            가능 프로그래밍 언어 C, C++, C#, Python, JavaScript, Java.
             ToyoTech에서는 PCB 디자인, 프로젝트 아이디어, 일부 프로젝트 코딩 등을 담당.
             ToyoTech의 학생들을 직접 가르침.`,
     },
