@@ -211,7 +211,8 @@ a {
 
 .flip-card:hover,
 .flip-card:focus-within {
-    box-shadow: 0 12px 32px 0 rgba(155,155,255,0.18);
+    /* box-shadow 제거로 라이트 효과 완전 제거 */
+    box-shadow: none;
     z-index: 2;
 }
 
@@ -233,7 +234,6 @@ a {
 .flip-card-front {
     z-index: 2;
     background: linear-gradient(135deg, #23234a 60%, #1f1f3b 100%);
-    box-shadow: 0 4px 16px 0 rgba(155,155,255,0.10);
 }
 
 .flip-card-back {
@@ -241,7 +241,6 @@ a {
     color: #fff;
     transform: rotateY(180deg);
     z-index: 1;
-    box-shadow: 0 8px 28px 0 rgba(155,155,255,0.13);
     padding: 24px 18px;
     text-align: center;
     opacity: 0.98;
