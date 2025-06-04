@@ -2,7 +2,7 @@ const profiles = {
     cho: {
         title: "조영식 Youngsik Cho",
         content: 
-            `도쿄이과대학 창역이공학부 전기전자정보공학과 25학번, 2006년생. 
+            `도쿄이과대학 창역이공학부 전기전자정보공학과 25학번, IEEE 회원, 2006년생. 
             가능 프로그래밍 언어 C, C++, C#, Python, JavaScript, Java.
             ToyoTech에서는 PCB 디자인, 펌웨어 개발, 일부 프로젝트 프로그래밍밍 담당.
             ToyoTech의 학생들을 직접 가르침.`,
