@@ -25,7 +25,7 @@ const profiles = {
     },
     kim: {
         title: "김주원 Juwon Kim",
-        content: `성산중 2학년, 2011년생
+        content: `성산중학교 2학년, 2011년생
             C, C++, C# 사용
             펌웨어 개발, 납땜 담당
             BOJ 골드 3 달성`,
