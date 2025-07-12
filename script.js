@@ -1,4 +1,3 @@
-// 모바일 환경에서 접속 시 m.toyotech.dev로 리다이렉트
 if (/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
     window.location.href = "https://m.toyotech.dev/";
 }

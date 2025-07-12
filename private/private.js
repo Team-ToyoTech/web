@@ -1,3 +1,7 @@
+if (/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+    window.location.href = "https://m.toyotech.dev/";
+}
+
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
 import {
     getAuth,
@@ -48,11 +52,13 @@ onAuthStateChanged(auth, (user) => {
     }
 });
 
-document.getElementById("todoInput").addEventListener("keydown", function (event) {
-    if (event.key === "Enter") {
-        AddTodo();
-    }
-});
+document
+    .getElementById("todoInput")
+    .addEventListener("keydown", function (event) {
+        if (event.key === "Enter") {
+            AddTodo();
+        }
+    });
 
 document.getElementById("sitePw").addEventListener("keydown", function (event) {
     if (event.key === "Enter") {
@@ -64,10 +70,7 @@ document.addEventListener("keydown", function (event) {
     if (event.key === "Enter") {
         const activeElement = document.activeElement;
 
-        if (
-            activeElement.tagName === "INPUT" &&
-            activeElement.closest("li")
-        ) {
+        if (activeElement.tagName === "INPUT" && activeElement.closest("li")) {
             const li = activeElement.closest("li");
             const saveBtn = li.querySelector("button:nth-of-type(1)"); // 저장 버튼만 클릭
             if (saveBtn) saveBtn.click();
@@ -113,8 +116,7 @@ function LoadTodos() {
                     const span = document.createElement("span");
                     span.textContent = change.doc.data().text;
 
-                    const editBtn =
-                        document.createElement("button");
+                    const editBtn = document.createElement("button");
                     editBtn.textContent = "수정";
                     editBtn.onclick = function () {
                         EditTodo(li, span);
