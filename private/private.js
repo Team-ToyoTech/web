@@ -1,5 +1,5 @@
 if (/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-    window.location.href = "https://m.toyotech.dev/";
+    window.location.href = "https://m.toyotech.dev/private/";
 }
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
