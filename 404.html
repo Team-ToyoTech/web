@@ -4,6 +4,7 @@
         <meta charset="UTF-8" />
         <title>404 — 페이지를 찾을 수 없습니다</title>
         <link rel="icon" href="/Logo Image/ToyoTech_Logo_forTab.png" />
+        <link rel="stylesheet" href="background.css" />
         <style>
             body {
                 margin: 0;
@@ -12,13 +13,14 @@
                 justify-content: center;
                 align-items: center;
                 height: 100vh;
-                background-color: #1f1f3b;
+                background-color: #17172c;
                 color: #eee;
                 font-family: "Segoe UI", Tahoma, sans-serif;
             }
             .container {
                 text-align: center;
                 max-width: 90%;
+                z-index: 1;
             }
             h1 {
                 font-size: 8rem;
@@ -61,5 +63,8 @@
                 >를 이용해 주세요.
             </p>
         </div>
+        <div id="particles-js"></div>
+        <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+        <script src="background.js"></script>
     </body>
 </html>
