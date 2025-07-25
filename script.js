@@ -1,7 +1,3 @@
-if (/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-    window.location.href = "https://m.toyotech.dev/";
-}
-
 const profiles = {
     cho: {
         title: "조영식 Youngsik Cho",
