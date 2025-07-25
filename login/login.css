@@ -57,6 +57,10 @@ h1 {
     z-index: 1;
 }
 
+h2 {
+    z-index: 1;
+}
+
 input[type="password"],
 input[type="email"] {
     padding: 10px;
