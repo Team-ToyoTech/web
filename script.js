@@ -1,3 +1,5 @@
+document.getElementById("yearNow").textContent = new Date().getFullYear();
+
 const profiles = {
     cho: {
         title: "조영식 Youngsik Cho",

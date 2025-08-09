@@ -287,3 +287,5 @@ window.Logout = function () {
         window.location.href = "/login/";
     });
 };
+
+document.getElementById("yearNow").textContent = new Date().getFullYear();

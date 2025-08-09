@@ -33,3 +33,5 @@ document.addEventListener("keydown", function (event) {
         Login();
     }
 });
+
+document.getElementById("yearNow").textContent = new Date().getFullYear();
